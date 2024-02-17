@@ -1,0 +1,30 @@
+[
+  {
+    "title": "Eductaion",
+    "id": "Education"
+  },
+  {
+    "title": "Cricket",
+    "id": "Cricket"
+  },
+  {
+    "title": "Football",
+    "id": "Football"
+  },
+  {
+    "title": "Technology",
+    "id": "Technology"
+  },
+  {
+    "title": "Crypto",
+    "id": "Crypto"
+  },
+  {
+    "title": "Entertainment",
+    "id": "Entertainment"
+  },
+  {
+    "title": "Gaming",
+    "id": "Gaming"
+  }
+]

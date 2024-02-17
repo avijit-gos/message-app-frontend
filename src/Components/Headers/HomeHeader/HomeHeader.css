@@ -1,0 +1,44 @@
+/** @format */
+
+.home_header_container {
+  width: 100%;
+  height: 7vh;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  /* background-color: var(--tertiary-color); */
+}
+.home_header_buttons {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+.home_header_app_name {
+  font-weight: 500;
+  font-size: 0.825rem;
+  font-family: "Pacifico", cursive;
+}
+.notification_box {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  margin: 0 5px;
+}
+.menu_btn {
+  background-color: transparent !important;
+}
+.menu_avatar {
+  width: 30px !important;
+  height: 30px !important;
+}
+.menu_item {
+  font-weight: 500 !important;
+  font-size: 0.75rem !important;
+}
+.logout {
+  color: crimson !important;
+}

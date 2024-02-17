@@ -1,0 +1,114 @@
+/** @format */
+
+.home_container {
+  width: 100%;
+  height: 92.7vh;
+  display: flex;
+  align-items: flex-start;
+}
+.chat_container {
+  width: 100%;
+  max-width: 500px;
+  height: 92.7vh;
+  padding: 7px;
+  overflow: hidden;
+}
+.chat_search_section {
+  position: relative;
+}
+.chat_search_input {
+  font-weight: 400 !important;
+  font-size: 0.825rem !important;
+  height: 35px !important;
+  padding-left: 22px !important;
+}
+.search_icon {
+  position: absolute;
+  top: 10px;
+  left: 5px;
+  z-index: 1px;
+}
+.chat_secions {
+  width: 100%;
+  height: 85vh;
+  margin-top: 10px;
+  position: relative;
+}
+.chat_tab_section {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+.tab_container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  font-weight: 400;
+  font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 0;
+  border-radius: 15px;
+  cursor: pointer;
+  cursor: pointer;
+  transition: all 0.1s linear;
+}
+.active_tab {
+  color: whitesmoke;
+  background-color: var(--secondary-color);
+  transition: all 0.1s linear;
+}
+.action_chat_btn {
+  position: absolute !important;
+  bottom: 7px !important;
+  right: 7px !important;
+  z-index: 10 !important;
+  background-color: var(--secondary-color) !important;
+  color: whitesmoke !important;
+}
+.menu_item {
+  font-size: 0.75rem !important;
+  font-weight: 500 !important;
+}
+.chat_cards_section {
+  width: 100%;
+  height: 80vh;
+  overflow: scroll;
+  margin-top: 3px;
+}
+.chat_cards_section::-webkit-scrollbar {
+  display: none;
+}
+/* Hide the scrollbar for Internet Explorer, Edge and Firefox */
+.chat_cards_section {
+  -ms-overflow-style: none; /* Internet Explorer and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+.message_container {
+  width: 100%;
+  max-width: 896px;
+  background-color: rgb(220, 220, 220);
+  padding: 5px;
+  height: 92.7vh;
+  display: inline-block;
+}
+
+@media screen and (max-width: 650px) {
+  .message_container {
+    display: none;
+  }
+  .chat_container {
+    margin: 0 auto;
+  }
+}
+.empty_chat_section {
+  width: 100%;
+  height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  font-size: 0.75rem;
+  color: var(--secondary-color);
+}
