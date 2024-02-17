@@ -1,0 +1,24 @@
+/** @format */
+
+.chat_card {
+  padding: 5px;
+  display: flex;
+  align-items: flex-start;
+}
+.chat_avatar {
+  width: 33px !important;
+  height: 33px !important;
+  margin-right: 5px;
+}
+.chat_card_info {
+  width: 100%;
+}
+.chat_name {
+  font-size: 0.825rem;
+  font-weight: 600;
+}
+.chat_message {
+  font-size: 0.65rem;
+  font-weight: 400;
+  color: rgb(159, 159, 159);
+}
