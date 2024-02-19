@@ -19,6 +19,7 @@ import { AiOutlineSearch } from "react-icons/ai";
 import { MdCreate } from "react-icons/md";
 import Chats from "./Components/Chats";
 import Channels from "./Components/Channels";
+import Groups from "./Components/Groups";
 
 const Chat = () => {
   const [active, setActive] = useState("my_chat");
@@ -50,6 +51,14 @@ const Chat = () => {
 
           <li
             className={
+              active === "groups" ? "active_tab tab_container" : "tab_container"
+            }
+            onClick={() => setActive("groups")}>
+            Groups
+          </li>
+
+          <li
+            className={
               active === "channels"
                 ? "active_tab tab_container"
                 : "tab_container"
@@ -60,7 +69,11 @@ const Chat = () => {
         </Box>
 
         {/* Redering components */}
-        {active === "my_chat" ? <Chats /> : <Channels />}
+        {active === "my_chat" ? (
+          <Chats />
+        ) : (
+          <>{active === "groups" ? <Groups /> : <Channels />}</>
+        )}
 
         <Menu>
           <MenuButton as={Button} className='action_chat_btn'>
@@ -69,6 +82,7 @@ const Chat = () => {
           <MenuList>
             <MenuItem className='menu_item'>Create a chat</MenuItem>
             <MenuItem className='menu_item'>Create a group</MenuItem>
+            <MenuItem className='menu_item'>Create a channel</MenuItem>
           </MenuList>
         </Menu>
       </Box>
