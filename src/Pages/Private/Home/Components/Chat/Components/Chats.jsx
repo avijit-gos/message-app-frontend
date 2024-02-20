@@ -16,8 +16,7 @@ const Chats = () => {
       maxBodyLength: Infinity,
       url: `${process.env.REACT_APP_BASE_URL}api/chat`,
       headers: {
-        "x-access-token":
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NWNiMWIxZjM3ZDlmMmVkYjRlOTQyMWQiLCJlbWFpbCI6ImFjY291bnRfZm91ckB0ZXN0LmNvbSIsIm5hbWUiOiJBY2NvdW50IEZvdXIiLCJ1c2VybmFtZSI6ImFjY291bnRfZm91ciIsImlhdCI6MTcwNzgwOTc0OCwiZXhwIjoxNzEwNDAxNzQ4fQ.ZBnnAxB9sDuljJzgs6YtZbyNWHrZ9U9lMfo-DYs2wWo",
+        "x-access-token": localStorage.getItem("token"),
       },
     };
 
