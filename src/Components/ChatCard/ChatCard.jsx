@@ -13,11 +13,18 @@ const chatCard = ({ chat }) => {
   return (
     <>
       {chat.isGroup ? (
-        <Box className='chat_card'>GROUP</Box>
+        <Box className='chat_card'>
+          <Avatar src={chat.p_i} className='chat_avatar' />
+          {/* chat info */}
+          <Box className='chat_card_info'>
+            <Box className='chat_name'>{chat.name}</Box>
+            <Box className='chat_message'>Sample latest message</Box>
+          </Box>
+        </Box>
       ) : (
         <Box className='chat_card'>
           {/* Chat avatar */}
-          <Avatar src={getData.p_i} className="chat_avatar" />
+          <Avatar src={getData.p_i} className='chat_avatar' />
           {/* chat info */}
           <Box className='chat_card_info'>
             <Box className='chat_name'>{getData.name}</Box>
