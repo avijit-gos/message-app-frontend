@@ -142,7 +142,6 @@
   color: whitesmoke !important;
 }
 .channel_sorting_container {
-  border: 1px solid red;
   width: 100%;
   height: auto;
   overflow-x: scroll;
@@ -236,7 +235,6 @@
 
   height: fit-content;
   padding: 2px 7px !important;
-  border: 1px solid rgb(161, 161, 161) !important;
   background-color: transparent !important;
 }
 .full_page_modal_group_create_body {
@@ -344,4 +342,9 @@
 .disable_group_create_btn {
   background-color: var(--disable-secondary-color) !important;
   cursor: no-drop;
+}
+.load_more_section {
+  width: 100%;
+  text-align: center;
+  padding: 5px;
 }

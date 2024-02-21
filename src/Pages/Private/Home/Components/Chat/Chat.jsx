@@ -139,6 +139,9 @@ const Chat = () => {
     setBio("");
     setSearchTerm("");
     setOpenGroupChatModal(false);
+    setOpenChannelModal(false);
+    setSelectedUsers([]);
+    setSelectedUsersId([]);
   };
 
   const inputRef = useRef(null);
@@ -201,6 +204,43 @@ const Chat = () => {
         setSelectedUsers([]);
         setSelectedUsersId([]);
         setOpenGroupChatModal(false);
+        setGroupCreateBtnLoading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const createChannelChat = () => {
+    setGroupCreateBtnLoading(true);
+    setDisable(true);
+    let data = JSON.stringify({
+      name: name,
+      bio: bio,
+      type: type,
+    });
+
+    let config = {
+      method: "post",
+      maxBodyLength: Infinity,
+      url: `${process.env.REACT_APP_BASE_URL}api/channel/`,
+      headers: {
+        "x-access-token": localStorage.getItem("token"),
+        "Content-Type": "application/json",
+      },
+      data: data,
+    };
+
+    axios
+      .request(config)
+      .then((response) => {
+        console.log(JSON.stringify(response.data));
+        setName("");
+        setBio("");
+        setType("");
+        setSelectedUsers([]);
+        setSelectedUsersId([]);
+        setOpenChannelModal(false);
         setGroupCreateBtnLoading(false);
       })
       .catch((error) => {
@@ -389,6 +429,65 @@ const Chat = () => {
       )}
 
       {/* Handle Channel Modal */}
+      {openChannelModal && (
+        <FullPageModal
+          isOpen={openChannelModal}
+          onClose={handleCloseGroupChatModal}
+          title={"Create group chat"}
+          body={
+            <Box className='full_page_modal_group_create_body'>
+              {/* Name */}
+              <InputComp
+                type='text'
+                placeholder='Group name'
+                className='input_field'
+                value={name}
+                handleChange={(e) => setName(e.target.value.slice(0, 50))}
+              />
+
+              {/* Bio */}
+              <TextareaComp
+                type='text'
+                placeholder='Group name'
+                className='input_field'
+                value={bio}
+                handleChange={(e) => setBio(e.target.value.slice(0, 250))}
+              />
+
+              {/* Group Type */}
+              <Box className='group_type_section'>
+                <Box className='group_type_header'>Group Type</Box>
+                <Box className='group_type_btns'>
+                  {Interests.map((data) => (
+                    <Box
+                      className={
+                        data.title === type
+                          ? "group_type_btn active_type"
+                          : "group_type_btn"
+                      }
+                      key={data.title}
+                      onClick={() => setType(data.title)}>
+                      {data.title}
+                    </Box>
+                  ))}
+                </Box>
+              </Box>
+            </Box>
+          }
+          footer={
+            <Box className='group_created_modal_footer'>
+              <AuthButton
+                loading={groupCreateBtnLoading}
+                disable={disable}
+                text='Create channel'
+                className={"group_create_btn"}
+                disableClassName={"disable_group_create_btn group_create_btn"}
+                clickHandler={createChannelChat}
+              />
+            </Box>
+          }
+        />
+      )}
 
       {/* Search Section */}
       <Box className='chat_search_section'>
@@ -455,7 +554,11 @@ const Chat = () => {
               onClick={() => setOpenGroupChatModal(true)}>
               Create a group
             </MenuItem>
-            <MenuItem className='menu_item'>Create a channel</MenuItem>
+            <MenuItem
+              className='menu_item'
+              onClick={() => setOpenChannelModal(true)}>
+              Create a channel
+            </MenuItem>
           </MenuList>
         </Menu>
       </Box>
