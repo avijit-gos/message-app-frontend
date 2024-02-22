@@ -23,7 +23,6 @@ const chatCard = ({ chat }) => {
         </Box>
       ) : (
         <Box className='chat_card'>
-          {/* Chat avatar */}
           <Avatar src={getData.p_i} className='chat_avatar' />
           {/* chat info */}
           <Box className='chat_card_info'>

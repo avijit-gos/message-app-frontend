@@ -5,7 +5,6 @@ import { Box, Button, useToast } from "@chakra-ui/react";
 import "./Home.css";
 import { GlobalContext } from "../../../Context/Context";
 import Layout from "../../../Layout/Layout";
-import Chat from "./Components/Chat/Chat";
 import Message from "./Components/Message/Message";
 import InterestModal from "../../../Components/ModalComp/InterestModal";
 import Interests from "../../../Config/interests.json";
@@ -133,7 +132,6 @@ const Home = () => {
             }
           />
         )}
-        <Chat />
         <Message />
       </Box>
     </Layout>

@@ -3,8 +3,8 @@
 import { Box, Button } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import SkeletonLoader from "../../../../../../Components/Loader/SkeletonLoader/SkeletonLoader";
-import ChatCard from "../../../../../../Components/ChatCard/ChatCard";
+import SkeletonLoader from "../../Loader/SkeletonLoader/SkeletonLoader";
+import ChatCard from "../../ChatCard/ChatCard";
 
 const Groups = () => {
   const user = JSON.parse(localStorage.getItem("user"));
