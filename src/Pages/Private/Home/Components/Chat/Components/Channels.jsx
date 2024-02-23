@@ -2,10 +2,10 @@
 
 import { Box, Button } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
-import SkeletonLoader from "../../Loader/SkeletonLoader/SkeletonLoader";
+import SkeletonLoader from "../../../../../../Components/Loader/SkeletonLoader/SkeletonLoader";
 import axios from "axios";
-import ChannelCard from "../../ChannelCard/ChannelCard";
-import AuthButton from "../../ButtonComp/AuthButton";
+import ChannelCard from "../../../../../../Components/ChannelCard/ChannelCard";
+import AuthButton from "../../../../../../Components/ButtonComp/AuthButton";
 import { MdClose } from "react-icons/md";
 
 const Channels = () => {

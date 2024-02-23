@@ -4,25 +4,21 @@ import React from "react";
 import { GlobalContext } from "../Context/Context";
 import { Box } from "@chakra-ui/react";
 import HomeHeader from "../Components/Headers/HomeHeader/HomeHeader";
-import ProfileHeader from "../Components/Headers/ProfileHeader/ProfileHeader";
-import Chat from "../Components/LeftSidebar/Chat";
 
-const Header = ({ pageType, title }) => {
-  if (pageType === "home" || pageType === "profile") {
+
+const Header = ({ pageType }) => {
+  if (pageType === "home") {
     return <HomeHeader />;
   }
 };
 
-const Layout = ({ children, title }) => {
+const Layout = ({ children }) => {
   const { pageType } = GlobalContext();
 
   return (
     <Box className='layout_container'>
-      <Header pageType={pageType} title={title} />
-      <Box className='app_section'>
-        <Chat />
-        <Box className='app_container'>{children}</Box>
-      </Box>
+      <Header pageType={pageType} />
+      <Box className='app_container'>{children}</Box>
     </Box>
   );
 };

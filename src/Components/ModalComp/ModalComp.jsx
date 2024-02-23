@@ -10,12 +10,13 @@ import {
   ModalBody,
   ModalCloseButton,
 } from "@chakra-ui/react";
+import "./Modal.css";
 
 const ModalComp = ({ isOpen, onClose, title, body, footer }) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
-      <ModalContent>
+      <ModalContent className={isOpen ? "modal open" : "modal"}>
         <ModalHeader>{title}</ModalHeader>
         <ModalCloseButton />
         <ModalBody>{body}</ModalBody>

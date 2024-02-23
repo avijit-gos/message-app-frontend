@@ -3,8 +3,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Box } from "@chakra-ui/react";
-import SkeletonLoader from "../../Loader/SkeletonLoader/SkeletonLoader";
-import ChatCard from "../../ChatCard/ChatCard";
+import SkeletonLoader from "../../../../../../Components/Loader/SkeletonLoader/SkeletonLoader";
+import ChatCard from "../../../../../../Components/ChatCard/ChatCard";
 
 const Chats = () => {
   const [loading, setLoading] = useState(false);

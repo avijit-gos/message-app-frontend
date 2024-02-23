@@ -1,7 +1,7 @@
 /** @format */
 
 import React, { useState, useEffect, useRef } from "react";
-import "./Chat.css";
+import "../../Home.css";
 import {
   Box,
   Button,
@@ -17,15 +17,15 @@ import { MdCreate } from "react-icons/md";
 import Chats from "./Components/Chats";
 import Channels from "./Components/Channels";
 import Groups from "./Components/Groups";
-import FullPageModal from "../ModalComp/FullPageModal";
-import InputComp from "../InputComp/InputComp";
-import TextareaComp from "../InputComp/TextareaComp";
-import { useDebounce } from "../../hooks/useDebouncer";
-import CircleLoader from "../Loader/CircleLoader/CircleLoader";
-import UserCard from "../UserCard/UserCard";
-import UserCard2 from "../UserCard/UserCard2";
-import AuthButton from "../ButtonComp/AuthButton";
-import Interests from "../../Config/interests.json";
+import FullPageModal from "../../../../../Components/ModalComp/FullPageModal";
+import InputComp from "../../../../../Components/InputComp/InputComp";
+import TextareaComp from "../../../../../Components/InputComp/TextareaComp";
+import { useDebounce } from "../../../../../hooks/useDebouncer";
+import CircleLoader from "../../../../../Components/Loader/CircleLoader/CircleLoader";
+import UserCard from "../../../../../Components/UserCard/UserCard";
+import UserCard2 from "../../../../../Components/UserCard/UserCard2";
+import AuthButton from "../../../../../Components/ButtonComp/AuthButton";
+import Interests from "../../../../../Config/interests.json";
 import axios from "axios";
 
 const Chat = () => {
