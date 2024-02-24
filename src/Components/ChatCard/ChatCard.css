@@ -4,6 +4,7 @@
   padding: 5px;
   display: flex;
   align-items: flex-start;
+  cursor: pointer;
 }
 .chat_avatar {
   width: 33px !important;

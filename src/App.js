@@ -5,6 +5,7 @@ import ProtectedRoute from "./Authentication/Authentication";
 import Register from "./Pages/Public/Register/Register";
 import Login from "./Pages/Public/Login/Login";
 import Home from "./Pages/Private/Home/Home";
+import ChatMainPage from "./Pages/Private/ChatMainPage/ChatMainPage";
 
 function App() {
   return (
@@ -18,6 +19,16 @@ function App() {
         element={
           <ProtectedRoute>
             <Home />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path='/chat/:id'
+        exact
+        element={
+          <ProtectedRoute>
+            <ChatMainPage />
           </ProtectedRoute>
         }
       />

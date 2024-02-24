@@ -14,7 +14,7 @@ import axios from "axios";
 
 const Home = () => {
   const toast = useToast();
-  const { setPageType } = GlobalContext();
+  const { setPageType, windowWidth, selectChatId } = GlobalContext();
   const user = JSON.parse(localStorage.getItem("user"));
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [hobbies, setHobbies] = useState([]);
@@ -134,7 +134,7 @@ const Home = () => {
           />
         )}
         <Chat />
-        <Message />
+        {selectChatId ? <Message /> : <Box className="unselected_chat_container">No chat selected</Box>}
       </Box>
     </Layout>
   );

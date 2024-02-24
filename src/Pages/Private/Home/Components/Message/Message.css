@@ -1,0 +1,213 @@
+/** @format */
+
+.message_container {
+  width: 100%;
+  max-width: 896px;
+  height: 92.7vh;
+  display: inline-block;
+  border-left: 3px solid rgb(232, 228, 228);
+}
+.main_chat_page_leader {
+  width: 100%;
+  max-width: 896px;
+  height: 92.7vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.main_chat_page_leader {
+  width: 100%;
+  max-width: 896px;
+  height: 92.7vh;
+  display: inline-block;
+  border-left: 3px solid rgb(232, 228, 228);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.empty_chat {
+  width: 100%;
+  max-width: 896px;
+  height: 92.7vh;
+  display: inline-block;
+  border-left: 3px solid rgb(232, 228, 228);
+  /* display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--secondary-color);
+  font-weight: bold;
+  font-size: 0.775rem;
+  letter-spacing: 0.1px; */
+}
+.empty_chat_header {
+  border: 1px solid rgb(232, 228, 228);
+  width: 100%;
+  height: 7vh;
+  padding: 5px;
+}
+.empty_chat_body {
+  width: 100%;
+  height: 85.75vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--secondary-color);
+  font-weight: bold;
+  font-size: 0.775rem;
+  letter-spacing: 0.1px;
+}
+.goback_btn {
+  background-color: transparent !important;
+}
+.chat_message_header_section {
+  width: 100%;
+  height: 7vh;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+}
+.chat_header_box {
+  width: 100%;
+  height: auto;
+  display: flex;
+  align-items: center;
+}
+.back_btn {
+  background-color: transparent !important;
+}
+.chat_header_avatar {
+  width: 32px !important;
+  height: 32px !important;
+  margin-right: 5px;
+}
+.chat_info_section {
+  margin-left: 3px;
+  line-height: 12px;
+}
+.chat_header_name {
+  font-weight: 500;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+}
+.chat_header_type {
+  font-size: 0.6rem;
+  font-weight: 400;
+  padding: 4px 10px;
+  border-radius: 12px;
+  color: royalblue;
+  background-color: rgba(65, 105, 225, 0.137);
+  margin-left: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.chat_header_bio {
+  font-size: 0.65rem;
+  font-weight: 400;
+  color: rgb(199, 193, 193);
+}
+.chat_header_menu_btn {
+  background-color: transparent !important;
+}
+.menu_item {
+  font-weight: 500 !important;
+  font-size: 0.725rem !important;
+}
+.delete {
+  color: crimson !important;
+}
+
+/* Chat Full page Body */
+.chat_message_body_section {
+  border: 1px solid red;
+  width: 100%;
+  height: 78.7vh;
+  overflow: scroll;
+}
+.chat_message_body_section::-webkit-scrollbar {
+  display: none;
+}
+/* Hide the scrollbar for Internet Explorer, Edge and Firefox */
+.chat_message_body_section {
+  -ms-overflow-style: none; /* Internet Explorer and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+.chat_message_footer_section {
+  width: 100%;
+  height: 7vh;
+  padding: 5px;
+}
+.modal_body_section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.modal_image_upload_section {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px dotted var(--secondary-color);
+  cursor: pointer;
+}
+.modal_image_upload_icon {
+  font-size: 2rem;
+}
+.preview_image_section {
+  border-radius: 5px;
+  width: 100%;
+  height: 200px;
+  position: relative;
+}
+.preview_image {
+  border-radius: 5px;
+  width: 100%;
+  height: 200px;
+}
+.image_close_btn {
+  position: absolute !important;
+  top: 0 !important;
+  right: 0 !important;
+}
+.modal_footer_section {
+  width: 100%;
+  text-align: right;
+}
+.modal_update_btn {
+  width: 100px !important;
+  height: 33px !important;
+  background-color: var(--secondary-color) !important;
+  color: whitesmoke !important;
+  font-size: 0.8rem !important;
+  font-weight: 400 !important;
+}
+.disable_modal_update_btn {
+  width: 100px !important;
+  height: 33px !important;
+  background-color: var(--disable-secondary-color) !important;
+  color: whitesmoke !important;
+  font-size: 0.8rem !important;
+  font-weight: 400 !important;
+  cursor: no-drop;
+}
+.modal_body_input_section {
+  width: 100%;
+  padding: 2px;
+  border: 1px solid red;
+}
+.modal_form_input {
+  width: 100% !important;
+  height: 35px !important;
+  font-weight: 400 !important;
+  font-size: 0.8rem !important;
+  box-shadow: none !important;
+  margin: 3px 0;
+}
+@media screen and (max-width: 650px) {
+  .message_container {
+    display: none;
+  }
+}

@@ -11,7 +11,7 @@ const ChannelCard = ({ channel }) => {
       <Box className='channel_info_section'>
         <Box className='channel_info_header'>
           <Box className='channel_name'>{channel.name}</Box>
-          <Box className='channel_type'>{channel.type}</Box>
+          <Box className='channel_type'>{channel.cat}</Box>
         </Box>
         <Box className='channel_last_msg'>Sample channel message</Box>
       </Box>
