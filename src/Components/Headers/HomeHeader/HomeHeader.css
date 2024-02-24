@@ -232,14 +232,14 @@
   height: auto;
   display: flex;
   align-items: center;
-  padding: 5px 2px;
+  padding: 5px;
   border: 1px solid rgb(223, 219, 219);
   cursor: pointer;
   border-radius: 5px;
   margin: 2px 0;
 }
 .avatar_icon {
-  font-size: 0.85rem;
+  font-size: 0.995rem;
   margin-right: 5px;
   color: rgba(0, 0, 0, 0.616);
 }
@@ -271,4 +271,23 @@
   width: 100%;
   font-weight: 400;
   font-size: 0.825rem;
+}
+.hobbies_update_section {
+  width: 100%;
+  height: auto;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 5px;
+}
+.hobbies_box {
+  width: fit-content;
+  height: fit-content;
+  font-weight: 400;
+  font-size: 0.8rem;
+  background-color: var(--secondary-color);
+  color: whitesmoke;
+  border-radius: 15px;
+  padding: 2px 12px;
+  margin: 2px;
 }

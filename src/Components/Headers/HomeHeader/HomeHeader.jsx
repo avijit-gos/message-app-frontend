@@ -20,13 +20,13 @@ import {
 import { FaBell } from "react-icons/fa";
 import "./HomeHeader.css";
 import ProfileDrawer from "../../DrawerComp/ProfileDrawer/ProfileDrawer";
-import { FaCamera, FaUser } from "react-icons/fa";
-import { BiSolidUserDetail } from "react-icons/bi";
+import { FaCamera } from "react-icons/fa";
 import InputComp from "../../InputComp/InputComp";
 import AuthButton from "../../ButtonComp/AuthButton";
 import ModalComp from "../../ModalComp/ModalComp";
 import axios from "axios";
 import TextareaComp from "../../InputComp/TextareaComp";
+import Interests from "../../../Config/interests.json";
 
 const HomeHeader = () => {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -47,6 +47,13 @@ const HomeHeader = () => {
   const [prevbio, setPrevbio] = useState(user.bio);
   const [loadingBioBtn, setLoadingBioBtn] = useState(false);
   const [disableBioBtn, setDisableBioBtn] = useState(true);
+
+  // hobbies state
+  const [openHobbyModal, setOpenHobbyModal] = useState(false);
+  const [hobbies, setHobbies] = useState(user.hobbies);
+  const [prevHobbies, setPrevHobbies] = useState(user.hobbies);
+  const [loadingHobbyBtn, setLoadingHobbyBtn] = useState(false);
+  const [disableHobbyBtn, setDisableHobbyBtn] = useState(true);
 
   const handleUploadImage = (e) => {
     setLoading(true);
@@ -122,6 +129,7 @@ const HomeHeader = () => {
     setOpenBioModal(false);
     setBio(user.bio);
     setPrevbio(user.bio);
+    setOpenHobbyModal(false);
   };
 
   useEffect(() => {
@@ -156,6 +164,54 @@ const HomeHeader = () => {
         setPrevbio(response.data.user.bio);
         localStorage.setItem("user", JSON.stringify(response.data.user));
         setOpenBioModal(false);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const handleAddHobbies = (data) => {
+    if (prevHobbies.includes(data.title)) {
+      const arr = prevHobbies;
+      const temp = arr.filter((i) => i !== data.title);
+      setPrevHobbies(temp);
+    } else {
+      setPrevHobbies((prev) => [...prev, data.title]);
+    }
+  };
+
+  useEffect(() => {
+    if (JSON.stringify(hobbies) === JSON.stringify(prevHobbies)) {
+      setDisableHobbyBtn(true);
+    } else {
+      setDisableHobbyBtn(false);
+    }
+  }, [hobbies, prevHobbies]);
+
+  const handleUpdateHobbies = () => {
+    let data = JSON.stringify({
+      hobbies: prevHobbies,
+    });
+
+    let config = {
+      method: "put",
+      maxBodyLength: Infinity,
+      url: `${process.env.REACT_APP_BASE_URL}api/user/update/profile/interest`,
+      headers: {
+        "x-access-token": localStorage.getItem("token"),
+        "Content-Type": "application/json",
+      },
+      data: data,
+    };
+
+    axios
+      .request(config)
+      .then((response) => {
+        console.log(response.data);
+        setHobbies(response.data.user.hobbies);
+        setPrevHobbies(response.data.user.hobbies);
+        localStorage.setItem("user", JSON.stringify(response.data.user));
+        setOpenHobbyModal(false);
       })
       .catch((error) => {
         console.log(error);
@@ -227,6 +283,44 @@ const HomeHeader = () => {
           }
         />
       )}
+
+      {/* Update profile hobbies modal */}
+      {openHobbyModal && (
+        <ModalComp
+          isOpen={openHobbyModal}
+          onClose={closeNameModal}
+          title='Update profile interest'
+          body={
+            <Box className='hobbies_modal_body'>
+              {Interests.map((data) => (
+                <Button
+                  key={data.title}
+                  onClick={() => handleAddHobbies(data)}
+                  className={
+                    prevHobbies.includes(data.title)
+                      ? "interest_btn active_interest_btn"
+                      : "interest_btn"
+                  }>
+                  {data.title}
+                </Button>
+              ))}
+            </Box>
+          }
+          footer={
+            <Box className='modal_footer_section'>
+              <AuthButton
+                loading={loadingHobbyBtn}
+                disable={disableHobbyBtn}
+                className={"update_profile_btn"}
+                disableClassName={"disable_update_profile_btn"}
+                text={"Update"}
+                clickHandler={handleUpdateHobbies}
+              />
+            </Box>
+          }
+        />
+      )}
+
       {openProfileDrawer && (
         <ProfileDrawer
           isOpen={openProfileDrawer}
@@ -279,17 +373,16 @@ const HomeHeader = () => {
                         <Box
                           className='accrodion_box'
                           onClick={() => setOpenNameModal(true)}>
-                          <FaUser className='avatar_icon' />
                           <span className='user_name'>{name}</span>
                         </Box>
                       </Box>
 
                       {/* Bio */}
+
                       <Box className='update_section'>
                         <Box
                           className='accrodion_box'
                           onClick={() => setOpenBioModal(true)}>
-                          <BiSolidUserDetail className='avatar_icon' />
                           <span className='user_bio'>
                             {bio || "No profile bio has been set"}
                           </span>
@@ -297,6 +390,15 @@ const HomeHeader = () => {
                       </Box>
 
                       {/* Interests */}
+                      <Box
+                        className='hobbies_update_section'
+                        onClick={() => setOpenHobbyModal(true)}>
+                        {(hobbies || []).map((data) => (
+                          <Box className='hobbies_box' key={data}>
+                            {data}
+                          </Box>
+                        ))}
+                      </Box>
 
                       {/* Account created */}
                     </AccordionPanel>
