@@ -9,6 +9,7 @@ function CreateContextProvider({ children }) {
   const [pageType, setPageType] = React.useState("home");
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [selectChatId, setSelectChatId] = useState("");
+  const [selectChat, setSelectChat] = useState(null);
 
   return (
     <CreateContext.Provider
@@ -19,6 +20,8 @@ function CreateContextProvider({ children }) {
         setWindowWidth,
         selectChatId,
         setSelectChatId,
+        selectChat,
+        setSelectChat,
       }}>
       {children}
     </CreateContext.Provider>

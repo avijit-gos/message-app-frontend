@@ -15,7 +15,8 @@ import ChatMessageFooter from "./Components/ChatMessageFooter";
 
 const Message = () => {
   const navigate = useNavigate();
-  const { selectChatId, setSelectChatId } = GlobalContext();
+  const { selectChatId, setSelectChatId, selectChat, setSelectChat } =
+    GlobalContext();
   const [loader, setLoader] = useState(false);
   const [chat, setChat] = useState(null);
 
@@ -43,6 +44,7 @@ const Message = () => {
       .then((response) => {
         setChat(response.data);
         setLoader(false);
+        setSelectChat(response.data);
       })
       .catch((error) => {
         console.log(error);
@@ -59,7 +61,7 @@ const Message = () => {
         </Box>
       ) : (
         <>
-          {chat ? (
+          {chat && selectChat ? (
             <>
               <ChatMessageHeader chat={chat} />
               <ChatMessageBody chat={chat} />

@@ -12,7 +12,7 @@ import {
   Img,
   useToast,
 } from "@chakra-ui/react";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { MdOutlineKeyboardBackspace } from "react-icons/md";
 import { getChatName } from "../../../../../../Utils/getChatName";
 import { MdMoreVert } from "react-icons/md";
@@ -26,6 +26,10 @@ import InputComp from "../../../../../../Components/InputComp/InputComp";
 import TextareaComp from "../../../../../../Components/InputComp/TextareaComp";
 import FullPageModal from "../../../../../../Components/ModalComp/FullPageModal";
 import axios from "axios";
+import Members from "../../../../../../Components/UserCard/Members";
+import { useDebounce } from "../../../../../../hooks/useDebouncer";
+import CircleLoader from "../../../../../../Components/Loader/CircleLoader/CircleLoader";
+import UserCard2 from "../../../../../../Components/UserCard/UserCard2";
 
 const ChatMessageHeader = ({ chat }) => {
   const toast = useToast();
@@ -69,6 +73,18 @@ const ChatMessageHeader = ({ chat }) => {
   const [users, setUsers] = useState([]);
 
   const [openAdminModal, setOpenAdminModal] = useState(false);
+
+  const [openUsersModal, setOpenUsersModal] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedUsers, setSelectedUsers] = useState([]);
+  const [selectedUsersId, setSelectedUsersId] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [btnLoading, setBtnLoading] = useState(false);
+  const [btnDisable, setBtnDisable] = useState(false);
+  const [isDisable, setIsDisable] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
   useEffect(() => {
     if (!chat.isGroup) {
@@ -301,7 +317,12 @@ const ChatMessageHeader = ({ chat }) => {
     axios
       .request(config)
       .then((response) => {
-        console.log(response.data);
+        setCount(response.data);
+        if (page === 1) {
+          setUsers(response.data);
+        } else {
+          setUsers((prev) => [...prev, ...response.data]);
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -316,6 +337,86 @@ const ChatMessageHeader = ({ chat }) => {
       fetchMembers();
     }
   }, [page, openAdminModal]);
+
+  const inputRef = useRef(null);
+
+  const handleRemoveSelectUser = (e) => {
+    if (
+      e.key === "Backspace" &&
+      e.target.value === "" &&
+      selectedUsers.length > 0
+    ) {
+      const arr = selectedUsers;
+      const temp = arr.splice(0, arr.length - 1);
+      setSelectedUsers(temp);
+
+      const arr1 = selectedUsersId;
+      const temp1 = arr1.splice(0, arr.length - 1);
+      setSelectedUsersId(temp1);
+    }
+  };
+
+  const handleAddMemebers = (user) => {
+    if (!selectedUsersId.includes(user._id)) {
+      setSelectedUsers((prev) => [...prev, user]);
+      setSelectedUsersId((prev) => [...prev, user._id]);
+      setSearchTerm("");
+      setUsers([]);
+      inputRef.current.focus();
+    }
+  };
+
+  useEffect(() => {
+    if (searchTerm.length > 1) {
+      handleSearchUser(debouncedSearchTerm);
+    }
+  }, [debouncedSearchTerm, page]);
+
+  const handleSearchUser = (debouncedSearchTerm) => {
+    if (page === 1) {
+      setLoading(true);
+    }
+    let config = {
+      method: "get",
+      maxBodyLength: Infinity,
+      url: `${process.env.REACT_APP_BASE_URL}api/chat/list-users/${selectChatId}?search=${searchTerm}&page=${page}&limit=${limit}`,
+      headers: {
+        "x-access-token": localStorage.getItem("token"),
+      },
+    };
+
+    axios
+      .request(config)
+      .then((response) => {
+        console.log(response.data);
+        setCount(response.data.length);
+        if (page === 1) {
+          setUsers(response.data);
+        } else {
+          setUsers((prev) => [...prev, ...response.data]);
+        }
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        setLoading(false);
+      });
+  };
+
+  const handleIncrementPage = () => {
+    setBtnDisable(true);
+    setBtnLoading(true);
+    setPage((prev) => prev + 1);
+  };
+
+  useEffect(() => {
+    if (selectedUsersId.length === 0) {
+      console.log("$$$$ ZEO");
+      setIsDisable(true);
+    } else {
+      setIsDisable(false);
+    }
+  }, [selectedUsersId]);
 
   return (
     <>
@@ -449,7 +550,100 @@ const ChatMessageHeader = ({ chat }) => {
           isOpen={openAdminModal}
           onClose={setOpenAdminModal}
           title={"Group Members"}
-          body={<Box>Memebers</Box>}
+          body={
+            <Box className='members_modal'>
+              {(users || []).length > 0 ? (
+                <>
+                  {users.map((data) => (
+                    <Members
+                      key={data._id}
+                      user={data}
+                      setUsers={setUsers}
+                      users={user}
+                    />
+                  ))}
+                </>
+              ) : (
+                <Box className='empty_members_modal'>No memebers found</Box>
+              )}
+            </Box>
+          }
+        />
+      )}
+
+      {/* Add new members in group chat */}
+      {openUsersModal && (
+        <FullPageModal
+          isOpen={openUsersModal}
+          onClose={setOpenUsersModal}
+          title={"Add Members"}
+          body={
+            <Box className='members_modal_body'>
+              <Box className='group_members_section'>
+                <Box className='search_input_container'>
+                  {selectedUsers.map((user) => (
+                    <Box className='pills_section'>
+                      <Avatar src={user.p_i} className='pills_avatar' />
+                      <span className='pills_name'>{user.name}</span>
+                    </Box>
+                  ))}
+                  <Input
+                    type='text'
+                    placeholder='Search user'
+                    className='modal_search_input'
+                    value={searchTerm}
+                    ref={inputRef}
+                    onKeyDown={(e) => handleRemoveSelectUser(e)}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                  />
+                </Box>
+                {/* Search Result section */}
+                <Box className='modal_search_body'>
+                  {loading ? (
+                    <Box className='modal_loadder_section'>
+                      <CircleLoader />
+                    </Box>
+                  ) : (
+                    <>
+                      {(users || []).length > 0 && (
+                        <>
+                          {users.map((user) => (
+                            <UserCard2
+                              key={user._id}
+                              data={user}
+                              clickHandler={handleAddMemebers}
+                            />
+                          ))}
+                          {limit === count && (
+                            <Box className='load_more_btn_section'>
+                              <AuthButton
+                                loading={btnLoading}
+                                disable={btnDisable}
+                                text={"Load more"}
+                                className={"load_more_btn"}
+                                disableClassName={"load_more_btn"}
+                                clickHandler={handleIncrementPage}
+                              />
+                            </Box>
+                          )}
+                        </>
+                      )}
+                    </>
+                  )}
+                </Box>
+              </Box>
+            </Box>
+          }
+          footer={
+            <AuthButton
+              loading={btnLoading}
+              disable={isDisable}
+              text={"Add"}
+              className={"modal_add_members_btn"}
+              disableClassName={"disable_modal_add_members_btn"}
+              clickHandler={handleIncrementPage}
+            />
+          }
         />
       )}
 
@@ -488,13 +682,8 @@ const ChatMessageHeader = ({ chat }) => {
                 <MenuItem
                   className='menu_item'
                   onClick={handleOpenMembersModal}>
-                  Add members
+                  Group members
                 </MenuItem>
-              )}
-
-              {/* Remove members from group */}
-              {chat.creator._id === user._id && (
-                <MenuItem className='menu_item'>Remove members</MenuItem>
               )}
 
               {/* Group info */}
@@ -518,6 +707,19 @@ const ChatMessageHeader = ({ chat }) => {
               {/* Privacy settings */}
               {chat.creator._id === user._id && (
                 <MenuItem className='menu_item'>Privacy settings</MenuItem>
+              )}
+
+              {/* Add members */}
+              {chat.creator._id === user._id && (
+                <MenuItem
+                  className='menu_item'
+                  onClick={() => setOpenUsersModal(true)}>
+                  Add members
+                </MenuItem>
+              )}
+
+              {chat.creator._id === user._id && (
+                <MenuItem className='menu_item'>Requests</MenuItem>
               )}
 
               {/* Leave group */}
