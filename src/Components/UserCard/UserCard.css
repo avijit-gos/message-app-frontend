@@ -70,3 +70,16 @@
   background-color: rgba(220, 20, 60, 0.212);
   margin: 0 3px;
 }
+.users_card_btns {
+  display: flex;
+  align-items: center;
+}
+.user_card_send_chat_btn {
+  background-color: transparent !important;
+}
+.accept {
+  color: mediumseagreen !important;
+}
+.cancel {
+  color: crimson !important;
+}

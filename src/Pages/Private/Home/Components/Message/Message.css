@@ -263,3 +263,29 @@
   font-size: 0.825rem !important;
   cursor: no-drop !important;
 }
+.leave_btn {
+  background-color: crimson;
+}
+.members_menu_item {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center;
+}
+.members_count {
+  font-weight: 400;
+  font-size: 0.725rem;
+  padding: 2px 6px;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(232, 236, 240);
+}
+.join_chat_btn {
+  font-weight: 400 !important;
+  font-size: 0.75rem !important;
+  background-color: var(--secondary-color) !important;
+  color: whitesmoke !important;
+  min-width: 100px !important;
+  height: 30px !important;
+}
