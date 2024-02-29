@@ -27,8 +27,10 @@ import UserCard2 from "../../../../../Components/UserCard/UserCard2";
 import AuthButton from "../../../../../Components/ButtonComp/AuthButton";
 import Interests from "../../../../../Config/interests.json";
 import axios from "axios";
+import { socket, useSocket, isConnected } from "../../../../../socket/socket";
 
 const Chat = () => {
+  useSocket();
   const [active, setActive] = useState("my_chat");
   const [openSingleChatModal, setSingleChatModal] = useState(false);
   const [openGroupChatModal, setOpenGroupChatModal] = useState(false);

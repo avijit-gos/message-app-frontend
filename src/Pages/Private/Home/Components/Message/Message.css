@@ -133,11 +133,7 @@
   -ms-overflow-style: none; /* Internet Explorer and Edge */
   scrollbar-width: none; /* Firefox */
 }
-.chat_message_footer_section {
-  width: 100%;
-  height: 7vh;
-  padding: 5px;
-}
+
 .modal_body_section {
   display: flex;
   align-items: center;
@@ -288,4 +284,98 @@
   color: whitesmoke !important;
   min-width: 100px !important;
   height: 30px !important;
+}
+
+/* Message footer section */
+.chat_message_footer_section {
+  width: 100%;
+  height: 7vh;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+.message_input {
+  width: 100% !important;
+  height: 35px !important;
+  border-radius: 15px !important;
+  font-weight: 400 !important;
+  font-size: 0.8rem !important;
+}
+.chat_message_buttons_section {
+  display: flex;
+  align-items: center;
+}
+.image_label {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 2px;
+  cursor: pointer;
+}
+.message_footer_icon {
+  font-size: 1rem;
+}
+.message_footer_btn {
+  padding: 0 !important;
+  margin: 0 !important;
+  width: fit-content !important;
+  height: fit-content !important;
+  width: 20px !important;
+  height: 20px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin: 0 2px !important;
+  background-color: transparent !important;
+}
+.disable_message_send_btn {
+  padding: 0 !important;
+  margin: 0 !important;
+  width: fit-content !important;
+  height: fit-content !important;
+  width: 30px !important;
+  height: 30px !important;
+  border-radius: 7px !important;
+  background-color: var(--disable-secondary-color) !important;
+  color: whitesmoke !important;
+  cursor: no-drop !important;
+}
+.message_send_btn {
+  padding: 0 !important;
+  margin: 0 !important;
+  width: fit-content !important;
+  height: fit-content !important;
+  width: 30px !important;
+  height: 30px !important;
+  border-radius: 7px !important;
+  background-color: var(--secondary-color) !important;
+  color: whitesmoke !important;
+}
+.message_preview_image_section {
+  width: 200px;
+  height: 110px;
+  border-radius: 5px;
+  position: absolute;
+  left: 3px;
+  bottom: 50px;
+}
+.message_preview_image {
+  width: 200px;
+  height: 110px;
+  border-radius: 5px;
+}
+.close_btn {
+  position: absolute !important;
+  top: 0 !important;
+  right: 0 !important;
+  background-color: rgba(0, 0, 0, 0.468) !important;
+  color: whitesmoke !important;
+}
+.emoji_container {
+  position: absolute;
+  right: 5px;
+  bottom: 60px;
 }

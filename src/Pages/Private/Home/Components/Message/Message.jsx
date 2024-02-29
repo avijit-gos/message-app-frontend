@@ -12,6 +12,7 @@ import axios from "axios";
 import ChatMessageHeader from "./Components/ChatMessageHeader";
 import ChatMessageBody from "./Components/ChatMessageBody";
 import ChatMessageFooter from "./Components/ChatMessageFooter";
+import { socket, useSocket, isConnected } from "../../../../../socket/socket";
 
 const Message = () => {
   const navigate = useNavigate();
@@ -19,6 +20,8 @@ const Message = () => {
     GlobalContext();
   const [loader, setLoader] = useState(false);
   const [chat, setChat] = useState(null);
+
+  useSocket();
 
   const goBack = () => {
     if (window.innerWidth > 650) {
@@ -42,9 +45,11 @@ const Message = () => {
     axios
       .request(config)
       .then((response) => {
+        console.log(response.data);
         setChat(response.data);
         setLoader(false);
         setSelectChat(response.data);
+        socket.emit("join chat", response.data._id);
       })
       .catch((error) => {
         console.log(error);

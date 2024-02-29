@@ -31,6 +31,11 @@ import { useDebounce } from "../../../../../../hooks/useDebouncer";
 import CircleLoader from "../../../../../../Components/Loader/CircleLoader/CircleLoader";
 import UserCard2 from "../../../../../../Components/UserCard/UserCard2";
 import PendingUsers from "../../../../../../Components/UserCard/PendingUsers";
+import {
+  socket,
+  useSocket,
+  isConnected,
+} from "../../../../../../socket/socket";
 
 const ChatMessageHeader = ({ chat }) => {
   const toast = useToast();
@@ -91,6 +96,8 @@ const ChatMessageHeader = ({ chat }) => {
 
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
+  useSocket();
+
   useEffect(() => {
     if (!chat.isGroup) {
       const result = getChatName(chat.users, user);
@@ -147,14 +154,13 @@ const ChatMessageHeader = ({ chat }) => {
     };
 
     fetch(
-      `${process.env.REACT_APP_BASE_URL}api/chat/update-profile-image/${
-        selectChatId || id
-      }`,
+      `${process.env.REACT_APP_BASE_URL}api/chat/update-profile-image/${chat._id}`,
       requestOptions
     )
       .then((response) => response.json())
       .then((result) => {
         console.log(result);
+        socket.emit("update chat", result.result);
         setImage("");
         setPrevImage("");
         setOpenProfileModal(false);
@@ -213,9 +219,7 @@ const ChatMessageHeader = ({ chat }) => {
     let config = {
       method: "put",
       maxBodyLength: Infinity,
-      url: `${process.env.REACT_APP_BASE_URL}api/chat/update-name/${
-        selectChatId || id
-      }`,
+      url: `${process.env.REACT_APP_BASE_URL}api/chat/update-name/${chat._id}`,
       headers: {
         "x-access-token": localStorage.getItem("token"),
         "Content-Type": "application/json",
@@ -226,6 +230,7 @@ const ChatMessageHeader = ({ chat }) => {
     axios
       .request(config)
       .then((response) => {
+        socket.emit("update chat", response.data.group);
         setChatName(response.data.group.name);
         console.log(response.data);
         toast({
@@ -269,9 +274,7 @@ const ChatMessageHeader = ({ chat }) => {
     let config = {
       method: "put",
       maxBodyLength: Infinity,
-      url: `${process.env.REACT_APP_BASE_URL}api/chat/update-bio/${
-        selectChatId || id
-      }`,
+      url: `${process.env.REACT_APP_BASE_URL}api/chat/update-bio/${chat._id}`,
       headers: {
         "x-access-token": localStorage.getItem("token"),
         "Content-Type": "application/json",
@@ -311,9 +314,7 @@ const ChatMessageHeader = ({ chat }) => {
     let config = {
       method: "get",
       maxBodyLength: Infinity,
-      url: `${process.env.REACT_APP_BASE_URL}api/chat/members/${
-        selectChatId || id
-      }?page=${page}&limit=${limit}`,
+      url: `${process.env.REACT_APP_BASE_URL}api/chat/members/${chat._id}?page=${page}&limit=${limit}`,
       headers: {
         "x-access-token": localStorage.getItem("token"),
       },
@@ -384,7 +385,7 @@ const ChatMessageHeader = ({ chat }) => {
     let config = {
       method: "get",
       maxBodyLength: Infinity,
-      url: `${process.env.REACT_APP_BASE_URL}api/chat/list-users/${selectChatId}?search=${searchTerm}&page=${page}&limit=${limit}`,
+      url: `${process.env.REACT_APP_BASE_URL}api/chat/list-users/${chat._id}?search=${searchTerm}&page=${page}&limit=${limit}`,
       headers: {
         "x-access-token": localStorage.getItem("token"),
       },
@@ -432,9 +433,7 @@ const ChatMessageHeader = ({ chat }) => {
     let config = {
       method: "put",
       maxBodyLength: Infinity,
-      url: `${process.env.REACT_APP_BASE_URL}api/chat/add-member/${
-        selectChatId || id
-      }`,
+      url: `${process.env.REACT_APP_BASE_URL}api/chat/add-member/${chat._id}`,
       headers: {
         "x-access-token": localStorage.getItem("token"),
         "Content-Type": "application/json",
@@ -465,9 +464,7 @@ const ChatMessageHeader = ({ chat }) => {
     let config = {
       method: "put",
       maxBodyLength: Infinity,
-      url: `${process.env.REACT_APP_BASE_URL}api/chat/leave-group/${
-        selectChatId || id
-      }`,
+      url: `${process.env.REACT_APP_BASE_URL}api/chat/leave-group/${chat._id}`,
       headers: {
         "x-access-token": localStorage.getItem("token"),
         "Content-Type": "application/json",
@@ -497,9 +494,7 @@ const ChatMessageHeader = ({ chat }) => {
     let config = {
       method: "put",
       maxBodyLength: Infinity,
-      url: `${process.env.REACT_APP_BASE_URL}api/chat/join-request/${
-        selectChatId || id
-      }`,
+      url: `${process.env.REACT_APP_BASE_URL}api/chat/join-request/${chat._id}`,
       headers: {
         "x-access-token": localStorage.getItem("token"),
       },
@@ -534,9 +529,7 @@ const ChatMessageHeader = ({ chat }) => {
     let config = {
       method: "get",
       maxBodyLength: Infinity,
-      url: `http://localhost:8000/api/chat/pending/${
-        selectChatId || id
-      }?page=${page}&limit=${limit}`,
+      url: `http://localhost:8000/api/chat/pending/${chat._id}?page=${page}&limit=${limit}`,
       headers: {
         "x-access-token": localStorage.getItem("token"),
       },
@@ -833,7 +826,7 @@ const ChatMessageHeader = ({ chat }) => {
                     <PendingUsers
                       key={data._id}
                       data={data}
-                      id={selectChatId || id}
+                      id={chat._id}
                       setPendingUsers={setPendingUsers}
                       pendingUsers={pendingUsers}
                     />
