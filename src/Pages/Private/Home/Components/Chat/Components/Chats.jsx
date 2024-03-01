@@ -5,13 +5,20 @@ import axios from "axios";
 import { Box } from "@chakra-ui/react";
 import SkeletonLoader from "../../../../../../Components/Loader/SkeletonLoader/SkeletonLoader";
 import ChatCard from "../../../../../../Components/ChatCard/ChatCard";
+import {
+  socket,
+  useSocket,
+  isConnected,
+} from "../../../../../../socket/socket";
 
 const Chats = () => {
+  useSocket();
   const [loading, setLoading] = useState(false);
   const [chats, setChats] = useState([]);
+  const [updateChat, setUpdateChat] = useState(null);
 
   useEffect(() => {
-    setLoading(true);
+    if (!updateChat) setLoading(true);
     let config = {
       method: "get",
       maxBodyLength: Infinity,
@@ -33,7 +40,14 @@ const Chats = () => {
         setChats([]);
         setLoading(false);
       });
-  }, []);
+  }, [updateChat]);
+
+  useEffect(() => {
+    socket.on("updated chat", (chatObj) => {
+      setUpdateChat(chatObj);
+    });
+  });
+
   return (
     <Box className='chat_cards_section'>
       {loading ? (

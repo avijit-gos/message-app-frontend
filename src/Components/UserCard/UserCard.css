@@ -29,3 +29,57 @@
   font-weight: 400;
   color: rgb(167, 167, 167);
 }
+.members_card {
+  border: 1px solid rgb(167, 167, 167);
+  padding: 5px;
+  border-radius: 5px;
+  margin: 3px 0;
+  display: flex;
+  align-items: center;
+}
+.members_card_section {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+.user_card_avatar {
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: 50% !important;
+  margin-right: 4px;
+}
+.user_name {
+  font-weight: 500;
+  font-size: 0.825rem;
+  margin-right: 3px;
+}
+.user_username {
+  font-weight: 400;
+  font-size: 0.7rem;
+  color: rgb(152, 153, 154);
+}
+.delete_menu {
+  color: crimson !important;
+}
+.admin_tag {
+  font-size: 0.55rem;
+  font-weight: 500;
+  padding: 1.5px 10px;
+  border-radius: 12px;
+  color: crimson;
+  background-color: rgba(220, 20, 60, 0.212);
+  margin: 0 3px;
+}
+.users_card_btns {
+  display: flex;
+  align-items: center;
+}
+.user_card_send_chat_btn {
+  background-color: transparent !important;
+}
+.accept {
+  color: mediumseagreen !important;
+}
+.cancel {
+  color: crimson !important;
+}
