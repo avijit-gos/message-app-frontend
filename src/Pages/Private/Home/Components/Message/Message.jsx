@@ -15,6 +15,7 @@ import ChatMessageFooter from "./Components/ChatMessageFooter";
 import { socket, useSocket, isConnected } from "../../../../../socket/socket";
 
 const Message = () => {
+  const user = JSON.parse(localStorage.getItem("user"));
   const navigate = useNavigate();
   const { selectChatId, setSelectChatId, selectChat, setSelectChat } =
     GlobalContext();
@@ -70,7 +71,14 @@ const Message = () => {
             <>
               <ChatMessageHeader chat={chat} />
               <ChatMessageBody chat={chat} />
-              <ChatMessageFooter chat={chat} />
+              {chat.users.includes(user._id) ||
+              chat.creator._id === user._id ? (
+                <ChatMessageFooter chat={chat} />
+              ) : (
+                <Box className='not_member_group'>
+                  You are not a member of this group
+                </Box>
+              )}
             </>
           ) : (
             <Box className='empty_chat_container'>

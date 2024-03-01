@@ -120,7 +120,6 @@
 
 /* Chat Full page Body */
 .chat_message_body_section {
-  border: 1px solid red;
   width: 100%;
   height: 78.7vh;
   overflow: scroll;
@@ -378,4 +377,24 @@
   position: absolute;
   right: 5px;
   bottom: 60px;
+}
+.delete_btn {
+  color: whitesmoke !important;
+  background-color: crimson !important;
+}
+.disable_delete_btn {
+  color: whitesmoke !important;
+  background-color: rgb(242, 92, 122);
+}
+.not_member_group {
+  width: 100%;
+  height: 7vh;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 0.7rem;
+  letter-spacing: 0.1px;
+  color: var(--secondary-color);
 }

@@ -93,6 +93,7 @@ const ChatMessageHeader = ({ chat }) => {
   const [openLeaveGroupModal, setOpenLeaveGroupModal] = useState(false);
   const [openPendingGroupModal, setOpenPendingGroupModal] = useState(false);
   const [pendingUsers, setPendingUsers] = useState([]);
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
 
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
@@ -207,6 +208,7 @@ const ChatMessageHeader = ({ chat }) => {
   const handleCloseDetailsModal = () => {
     setOpenDetailsModal(false);
     setOpenBioModal(false);
+    setOpenDeleteModal(false);
   };
 
   const handleUpdateGroupInfo = () => {
@@ -503,13 +505,17 @@ const ChatMessageHeader = ({ chat }) => {
     axios
       .request(config)
       .then((response) => {
-        // console.log(JSON.stringify(response.data));
+        console.log(response.data.chat);
         if (pending.includes(user._id)) {
           const arr = pending;
           const temp = arr.filter((data) => data !== user._id);
           setPending(temp);
         } else {
           setPending((prev) => [...prev, user._id]);
+          socket.emit("join request", {
+            ...response.data.chat,
+            ...{ pendingUser: user._id },
+          });
         }
       })
       .catch((error) => {
@@ -555,6 +561,40 @@ const ChatMessageHeader = ({ chat }) => {
       fetchPendingUsers();
     }
   }, [page, openPendingGroupModal]);
+
+  const handleDeleteGroup = () => {
+    let config = {
+      method: "delete",
+      maxBodyLength: Infinity,
+      url: `${process.env.REACT_APP_BASE_URL}api/chat/delete-group/${chat._id}`,
+      headers: {
+        "x-access-token": localStorage.getItem("token"),
+      },
+    };
+
+    axios
+      .request(config)
+      .then((response) => {
+        console.log(response.data);
+        socket.emit("update chat", response.data.chat);
+        setSelectChatId("");
+        if (window.innerWidth < 650) {
+          navigate(`/`);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  useEffect(() => {
+    socket.on("received new join request", (data) => {
+      // console.log("### received new join request", data);
+      if (data._id === chat._id) {
+        setPending(data.pending);
+      }
+    });
+  });
 
   return (
     <>
@@ -840,6 +880,34 @@ const ChatMessageHeader = ({ chat }) => {
         />
       )}
 
+      {/* Group delete modal */}
+      {openDeleteModal && (
+        <ModalComp
+          isOpen={openDeleteModal}
+          onClose={handleCloseDetailsModal}
+          title={<>Delete group</>}
+          body={
+            <Box className='modal_body_input_section'>
+              <dpan className='delete_msg'>
+                Do you want to delete this group chat?
+              </dpan>
+            </Box>
+          }
+          footer={
+            <Box className='modal_footer_section'>
+              <AuthButton
+                disable={false}
+                loading={false}
+                text='Delete'
+                className='modal_update_btn delete_btn'
+                disableClassName='disable_modal_update_btn disable_delete_btn'
+                clickHandler={handleDeleteGroup}
+              />
+            </Box>
+          }
+        />
+      )}
+
       {chat.isGroup ? (
         <Box className='chat_message_header_section'>
           <Box className='chat_header_box'>
@@ -939,7 +1007,11 @@ const ChatMessageHeader = ({ chat }) => {
 
                 {/* Delete settings */}
                 {chat.creator._id === user._id && (
-                  <MenuItem className='menu_item delete'>Delete group</MenuItem>
+                  <MenuItem
+                    className='menu_item delete'
+                    onClick={() => setOpenDeleteModal(true)}>
+                    Delete group
+                  </MenuItem>
                 )}
               </MenuList>
             </Menu>
