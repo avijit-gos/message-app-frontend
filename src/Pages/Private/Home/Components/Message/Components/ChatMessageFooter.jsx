@@ -9,9 +9,10 @@ import { BsEmojiLaughing, BsSendFill } from "react-icons/bs";
 import AuthButton from "../../../../../../Components/ButtonComp/AuthButton";
 import { MdOutlineClose } from "react-icons/md";
 import EmojiPicker from "emoji-picker-react";
+import { socket, useSocket } from "../../../../../../socket/socket";
 
-const ChatMessageFooter = () => {
-  const { selectChatId, selectChat } = GlobalContext();
+const ChatMessageFooter = ({ chat, setMessages }) => {
+  useSocket();
   const [message, setMessage] = useState("");
   const [image, setImage] = useState("");
   const [prevImage, setPrevImage] = useState("");
@@ -41,7 +42,40 @@ const ChatMessageFooter = () => {
   };
 
   // Handle send message
-  const handleSendMessage = () => {};
+  const handleSendMessage = () => {
+    setdisable(true);
+    setLoading(true);
+    const myHeaders = new Headers();
+    myHeaders.append("x-access-token", localStorage.getItem("token"));
+
+    const formdata = new FormData();
+    formdata.append("message", message);
+    formdata.append("image", image);
+
+    const requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: formdata,
+      redirect: "follow",
+    };
+
+    fetch(
+      `${process.env.REACT_APP_BASE_URL}api/message/${chat._id}`,
+      requestOptions
+    )
+      .then((response) => response.json())
+      .then((result) => {
+        // console.log(result);
+        setLoading(false);
+        setMessage("");
+        setImage("");
+        setPrevImage("");
+        setMessages((prev) => [...prev, result]);
+        // send data to socket
+        socket.emit("new message", result);
+      })
+      .catch((error) => console.error(error));
+  };
 
   // Handle adding emoji in input
   const onEmojiClick = (event, emojiObject) => {
@@ -87,12 +121,12 @@ const ChatMessageFooter = () => {
         </Box>
       )}
 
-      <InputComp
+      <Input
         type='text'
         placeholder='Enter message'
         className='message_input'
         value={message}
-        handleChange={(e) => setMessage(e.target.value.slice(0, 400))}
+        onChange={(e) => setMessage(e.target.value.slice(0, 400))}
       />
       <Box className='chat_message_buttons_section'>
         <label htmlFor='image_file' className='image_label'>
