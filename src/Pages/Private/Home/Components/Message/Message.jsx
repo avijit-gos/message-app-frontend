@@ -21,6 +21,7 @@ const Message = () => {
     GlobalContext();
   const [loader, setLoader] = useState(false);
   const [chat, setChat] = useState(null);
+  const [messages, setMessages] = useState([]);
 
   useSocket();
 
@@ -46,11 +47,14 @@ const Message = () => {
     axios
       .request(config)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         setChat(response.data);
         setLoader(false);
         setSelectChat(response.data);
-        socket.emit("join chat", response.data._id);
+        socket.emit("join chat", {
+          message: response.data._id,
+          user: user._id,
+        });
       })
       .catch((error) => {
         console.log(error);
@@ -70,10 +74,14 @@ const Message = () => {
           {chat && selectChat ? (
             <>
               <ChatMessageHeader chat={chat} />
-              <ChatMessageBody chat={chat} />
+              <ChatMessageBody
+                chat={chat}
+                messages={messages}
+                setMessages={setMessages}
+              />
               {chat.users.includes(user._id) ||
               chat.creator._id === user._id ? (
-                <ChatMessageFooter chat={chat} />
+                <ChatMessageFooter chat={chat} setMessages={setMessages} />
               ) : (
                 <Box className='not_member_group'>
                   You are not a member of this group

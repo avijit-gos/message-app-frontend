@@ -1,0 +1,112 @@
+/** @format */
+
+.message_outer_section {
+  padding: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 100%;
+}
+.others {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  /* */
+}
+
+.message_card {
+  width: fit-content;
+  max-width: 250px;
+  display: flex;
+  align-items: flex-start;
+  padding: 2px 12px;
+  margin-right: 5px;
+}
+.message_content {
+  padding: 5px;
+  background-color: rgb(241, 238, 238);
+  color: var(--secondary-color);
+  border-top-left-radius: 10px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 5px;
+  position: relative;
+}
+.message_text {
+  font-size: 0.825rem;
+  font-weight: 400;
+  font-family: sans-serif;
+}
+.message_image {
+  border-radius: 5px;
+  width: 100%;
+  height: 200px;
+}
+.timestamp {
+  font-size: 0.5rem;
+  font-weight: 400;
+  color: rgb(111, 110, 110);
+}
+.message_inner_section {
+  display: flex;
+  align-items: flex-start;
+}
+.message_menu_btn {
+  margin: 0px !important;
+  height: 0 !important;
+  width: 0 !important;
+  padding: 0 !important;
+  /* background-color: transparent !important; */
+  color: var(--secondary-color);
+  color: rgb(86, 83, 83) !important;
+}
+.others_message_inner_section {
+  background-color: var(--secondary-color);
+  color: whitesmoke;
+}
+.others_message_card {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+}
+._message_card {
+  width: fit-content;
+  max-width: 250px;
+  display: flex;
+  align-items: flex-start;
+}
+._message_avatar {
+  width: 28px !important;
+  height: 28px !important;
+  margin-right: 3px !important;
+}
+._message_content_box {
+  color: whitesmoke;
+  background-color: var(--secondary-color);
+  border-top-left-radius: 1px;
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+  border-bottom-left-radius: 15px;
+  max-width: 290px;
+  width: fit-content;
+  padding: 5px;
+  position: relative;
+}
+.sender_name {
+  font-weight: 600;
+  font-size: 0.6rem;
+  margin-bottom: 3px;
+  color: rgb(183, 182, 182);
+}
+.message_pin_icon {
+  color: var(--secondary-color);
+  position: absolute;
+  right: 0px;
+  top: 0px;
+}
+.other_message_pin_icon {
+  position: absolute;
+  top: 0;
+  right: 3px;
+  color: crimson;
+}
