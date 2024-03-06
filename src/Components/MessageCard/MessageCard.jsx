@@ -23,10 +23,13 @@ import AuthButton from "../ButtonComp/AuthButton";
 import axios from "axios";
 import { TbPinFilled } from "react-icons/tb";
 import TextareaComp from "../InputComp/TextareaComp";
+import { FaRegHeart, FaHeart } from "react-icons/fa";
+import { GlobalContext } from "../../Context/Context";
 
-const MessageCard = ({ message, index, messages, chat }) => {
+const MessageCard = ({ message, index, messages, chat, setMessages }) => {
   useSocket();
   const toast = useToast();
+  const { setSelectReplyMessage } = GlobalContext();
   const user = JSON.parse(localStorage.getItem("user"));
   const [content, setContent] = useState(message.content);
   const [image, setImage] = useState(message.image);
@@ -38,6 +41,8 @@ const MessageCard = ({ message, index, messages, chat }) => {
   const [messageText, setMessageText] = useState("");
   const [disableUpdateBtn, setDisableUpdateBtn] = useState(true);
   const [loadingUpdateBtn, setLoadingUpdateBtn] = useState(false);
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
+  const [likes, setLikes] = useState(message.likes || []);
 
   const handleOpenPinModal = (message) => {
     setOpenPinModal(true);
@@ -137,6 +142,7 @@ const MessageCard = ({ message, index, messages, chat }) => {
       .then((response) => {
         console.log(response.data);
         setContent(response.data.message.content);
+        setMessageText(handleDecrypt(response.data.message.content));
         toast({
           title: "Success",
           description: `${response.data.msg}`,
@@ -165,10 +171,90 @@ const MessageCard = ({ message, index, messages, chat }) => {
   //
   useEffect(() => {
     socket.on("sent update message", (data) => {
-      // if (data._id === message._id) {
-      //   setContent(data.content);
-      // }
-      console.log("sent update message");
+      if (data._id === message._id) {
+        setContent(data.content);
+      }
+    });
+  }, []);
+
+  const handleDeleteModal = (message) => {
+    setSelectMessage(message);
+    setOpenDeleteModal(true);
+  };
+
+  const handleDeleteMessage = () => {
+    let config = {
+      method: "delete",
+      maxBodyLength: Infinity,
+      url: `${process.env.REACT_APP_BASE_URL}api/message/delete/${selectMessage._id}`,
+      headers: {
+        "x-access-token": localStorage.getItem("token"),
+      },
+    };
+
+    axios
+      .request(config)
+      .then((response) => {
+        // console.log(response.data);
+        toast({
+          title: "Success",
+          description: `${response.data.msg}`,
+          status: "success",
+          duration: 5000,
+          isClosable: true,
+        });
+        setOpenDeleteModal(false);
+        socket.emit("delete message", response.data.message);
+        const arr = messages;
+        const temp = arr.filter((message) => message._id !== selectMessage._id);
+        setMessages(temp);
+      })
+      .catch((error) => {
+        console.log(error);
+        toast({
+          title: "Error",
+          description: `${error.response.data.error.message}`,
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
+        setOpenDeleteModal(false);
+      });
+  };
+
+  const handleAddLike = (id) => {
+    if (likes.includes(user._id)) {
+      const arr = likes;
+      const temp = arr.filter((data) => data !== user._id);
+      setLikes(temp);
+    } else {
+      setLikes((prev) => [...prev, user._id]);
+    }
+    let config = {
+      method: "put",
+      maxBodyLength: Infinity,
+      url: `${process.env.REACT_APP_BASE_URL}api/message/like-messsage/${id}`,
+      headers: {
+        "x-access-token": localStorage.getItem("token"),
+      },
+    };
+
+    axios
+      .request(config)
+      .then((response) => {
+        console.log(JSON.stringify(response.data));
+        socket.emit("like message", response.data.message);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  useEffect(() => {
+    socket.on("sent liked message", (data) => {
+      if (data._id === message._id) {
+        setLikes(data.likes);
+      }
     });
   }, []);
 
@@ -237,6 +323,33 @@ const MessageCard = ({ message, index, messages, chat }) => {
           }
         />
       )}
+
+      {/* Delete message modal */}
+      {openDeleteModal && (
+        <ModalComp
+          isOpen={openDeleteModal}
+          onClose={setOpenDeleteModal}
+          title={<>Delete message</>}
+          body={
+            <Box className='leave_group_modal_body'>
+              Do you want to delete this message?
+            </Box>
+          }
+          footer={
+            <Box className='modal_footer_section'>
+              <AuthButton
+                disable={false}
+                loading={false}
+                text={"Delete"}
+                className='modal_update_btn leave_btn'
+                disableClassName='disable_modal_update_btn'
+                clickHandler={handleDeleteMessage}
+              />
+            </Box>
+          }
+        />
+      )}
+
       {messageUser._id === user._id ? (
         <Box className='message_outer_section'>
           <Box className='message_card'>
@@ -249,6 +362,17 @@ const MessageCard = ({ message, index, messages, chat }) => {
                 <span className='timestamp'>
                   {timeDifference(new Date(), new Date(message.createdAt))}
                 </span>
+
+                <Button
+                  className='message_like_btn'
+                  onClick={() => handleAddLike(message._id)}>
+                  {likes.includes(user._id) ? (
+                    <FaHeart className='liked' />
+                  ) : (
+                    <FaRegHeart />
+                  )}{" "}
+                  <span className='message_like_count'>{likes.length}</span>
+                </Button>
               </Box>
               <Menu>
                 <MenuButton
@@ -271,7 +395,11 @@ const MessageCard = ({ message, index, messages, chat }) => {
                     </MenuItem>
                   )}
 
-                  <MenuItem className='menu_item delete'>Delete</MenuItem>
+                  <MenuItem
+                    className='menu_item delete'
+                    onClick={() => handleDeleteModal(message)}>
+                    Delete
+                  </MenuItem>
                 </MenuList>
               </Menu>
             </Box>
@@ -298,8 +426,51 @@ const MessageCard = ({ message, index, messages, chat }) => {
               <span className='timestamp'>
                 {timeDifference(new Date(), new Date(message.createdAt))}
               </span>
+              <Button
+                className='message_like_btn other_message_like_btn '
+                onClick={() => handleAddLike(message._id)}>
+                {likes.includes(user._id) ? (
+                  <FaHeart className='liked' />
+                ) : (
+                  <FaRegHeart />
+                )}{" "}
+                <span className='message_like_count other_message_like_count'>
+                  {likes.length}
+                </span>
+              </Button>
             </Box>
+
             {/* Menu */}
+            <Menu>
+              <MenuButton
+                className='message_menu_btn'
+                as={Button}
+                rightIcon={<FiMoreHorizontal />}></MenuButton>
+              <MenuList>
+                {/* Pin message */}
+                {chat.creator._id === user._id && (
+                  <MenuItem
+                    className='menu_item'
+                    onClick={() => handleOpenPinModal(message)}>
+                    {pin ? <>Unpin</> : <>Pin</>}
+                  </MenuItem>
+                )}
+
+                {chat.creator._id === user._id && (
+                  <MenuItem
+                    className='menu_item delete'
+                    onClick={() => handleDeleteModal(message)}>
+                    Delete
+                  </MenuItem>
+                )}
+
+                <MenuItem
+                  className='menu_item'
+                  onClick={() => setSelectReplyMessage(message)}>
+                  Reply
+                </MenuItem>
+              </MenuList>
+            </Menu>
           </Box>
         </Box>
       )}

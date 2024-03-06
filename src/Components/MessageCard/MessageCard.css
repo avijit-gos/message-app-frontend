@@ -1,4 +1,5 @@
 /** @format */
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,500;1,500&display=swap");
 
 .message_outer_section {
   padding: 2px;
@@ -11,6 +12,7 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  position: relative;
   /* */
 }
 
@@ -33,9 +35,13 @@
   position: relative;
 }
 .message_text {
-  font-size: 0.825rem;
+  font-size: 0.7rem;
   font-weight: 400;
-  font-family: sans-serif;
+  font-family: "Open Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-variation-settings: "wdth" 100;
 }
 .message_image {
   border-radius: 5px;
@@ -53,10 +59,10 @@
 }
 .message_menu_btn {
   margin: 0px !important;
-  height: 0 !important;
-  width: 0 !important;
+  height: fit-content !important;
+  width: fit-content !important;
   padding: 0 !important;
-  /* background-color: transparent !important; */
+  background-color: transparent !important;
   color: var(--secondary-color);
   color: rgb(86, 83, 83) !important;
 }
@@ -89,7 +95,7 @@
   border-bottom-left-radius: 15px;
   max-width: 290px;
   width: fit-content;
-  padding: 5px;
+  padding: 10px;
   position: relative;
 }
 .sender_name {
@@ -109,4 +115,39 @@
   top: 0;
   right: 3px;
   color: crimson;
+}
+.leave_btn {
+  background-color: crimson !important;
+}
+.message_info_card {
+  max-width: 290px;
+  width: fit-content;
+}
+.message_like_btn {
+  background-color: transparent !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  font-size: 0.75rem !important;
+  width: fit-content !important;
+  height: fit-content !important;
+  /* margin-top: 1px !important; */
+}
+.message_like_count {
+  padding-left: 2px;
+}
+.liked {
+  color: crimson !important;
+}
+.message_like_btn {
+  width: fit-content !important;
+  height: fit-content !important;
+  position: absolute !important;
+  right: -9px;
+  bottom: -6px;
+}
+.other_message_like_count {
+  color: crimson;
+}
+.other_message_like_btn {
+  color: crimson !important;
 }
