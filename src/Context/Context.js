@@ -10,6 +10,7 @@ function CreateContextProvider({ children }) {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [selectChatId, setSelectChatId] = useState("");
   const [selectChat, setSelectChat] = useState(null);
+  const [selectReplyMessage, setSelectReplyMessage] = useState(null);
 
   return (
     <CreateContext.Provider
@@ -22,6 +23,8 @@ function CreateContextProvider({ children }) {
         setSelectChatId,
         selectChat,
         setSelectChat,
+        selectReplyMessage,
+        setSelectReplyMessage,
       }}>
       {children}
     </CreateContext.Provider>

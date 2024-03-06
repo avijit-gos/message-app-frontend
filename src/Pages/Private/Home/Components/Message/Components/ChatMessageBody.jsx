@@ -76,6 +76,17 @@ const ChatMessageBody = ({ chat, messages, setMessages }) => {
     };
   }, []);
 
+  useEffect(() => {
+    socket.on("sent deleted message", (data) => {
+      if (data.chat === chat._id) {
+        // console.log("sent deleted message");
+        const arr = messages;
+        const temp = arr.filter((message) => message._id !== data._id);
+        setMessages(temp);
+      }
+    });
+  }, []);
+
   return (
     <Box className='chat_message_body_section' onScroll={handleScroll}>
       {loading ? (
@@ -119,6 +130,7 @@ const ChatMessageBody = ({ chat, messages, setMessages }) => {
                         index={index}
                         messages={messages}
                         chat={chat}
+                        setMessages={setMessages}
                       />
                     ))}
                     <Box ref={bottomRef} />
