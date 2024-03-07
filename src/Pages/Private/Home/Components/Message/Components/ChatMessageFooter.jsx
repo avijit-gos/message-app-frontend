@@ -3,16 +3,18 @@
 import { Box, Button, Img, Input } from "@chakra-ui/react";
 import React, { useState, useEffect, useRef } from "react";
 import { GlobalContext } from "../../../../../../Context/Context";
-import InputComp from "../../../../../../Components/InputComp/InputComp";
 import { GrGallery } from "react-icons/gr";
 import { BsEmojiLaughing, BsSendFill } from "react-icons/bs";
 import AuthButton from "../../../../../../Components/ButtonComp/AuthButton";
 import { MdOutlineClose } from "react-icons/md";
 import EmojiPicker from "emoji-picker-react";
 import { socket, useSocket } from "../../../../../../socket/socket";
+import { AiOutlineClose } from "react-icons/ai";
+import { handleDecrypt } from "../../../../../../Utils/decrypt";
 
 const ChatMessageFooter = ({ chat, setMessages }) => {
   useSocket();
+  const { selectReplyMessage, setSelectReplyMessage } = GlobalContext();
   const [message, setMessage] = useState("");
   const [image, setImage] = useState("");
   const [prevImage, setPrevImage] = useState("");
@@ -47,18 +49,15 @@ const ChatMessageFooter = ({ chat, setMessages }) => {
     setLoading(true);
     const myHeaders = new Headers();
     myHeaders.append("x-access-token", localStorage.getItem("token"));
-
     const formdata = new FormData();
     formdata.append("message", message);
     formdata.append("image", image);
-
     const requestOptions = {
       method: "POST",
       headers: myHeaders,
       body: formdata,
       redirect: "follow",
     };
-
     fetch(
       `${process.env.REACT_APP_BASE_URL}api/message/${chat._id}`,
       requestOptions
@@ -119,6 +118,24 @@ const ChatMessageFooter = ({ chat, setMessages }) => {
             onEmojiClick={onEmojiClick}
           />
         </Box>
+      )}
+
+      {selectReplyMessage && (
+        <div className='reply_message_section'>
+          <Button
+            className='reply_message_close_btn'
+            onClick={() => setSelectReplyMessage(null)}>
+            <AiOutlineClose />
+          </Button>
+          <div className='reply_message_card'>
+            <div className='reply_message_text'>
+              {handleDecrypt(selectReplyMessage.content)}
+            </div>
+            <div className='reply_message_user_name'>
+              {selectReplyMessage.user.name}
+            </div>
+          </div>
+        </div>
       )}
 
       <Input

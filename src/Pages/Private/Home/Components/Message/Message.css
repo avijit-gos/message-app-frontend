@@ -446,3 +446,44 @@
   -ms-overflow-style: none; /* Internet Explorer and Edge */
   scrollbar-width: none; /* Firefox */
 }
+.reply_message_section {
+  max-width: 390px;
+  padding: 12px;
+  width: 100%;
+  position: absolute;
+  left: 50%;
+  bottom: 100px;
+  transform: translate(-50%, 50px);
+  background-color: white;
+  z-index: 1;
+  -webkit-box-shadow: -6px 8px 9px 0px rgba(133, 128, 133, 1);
+  -moz-box-shadow: -6px 8px 9px 0px rgba(133, 128, 133, 1);
+  box-shadow: -6px 8px 9px 0px rgba(133, 128, 133, 1);
+  border: 1px solid whitesmoke;
+  border-radius: 5px;
+  /* position: relative; */
+}
+.reply_message_card {
+  background-color: rgb(238, 235, 235);
+  border-left: 2px solid royalblue;
+  padding: 5px;
+}
+.reply_message_text {
+  font-size: 0.65rem;
+  font-weight: 400;
+}
+.reply_message_user_name {
+  margin-top: 2px;
+  font-weight: bold;
+  font-size: 0.675rem;
+}
+.reply_message_close_btn {
+  width: fit-content !important;
+  height: fit-content;
+  margin: 0 !important;
+  padding: 0 !important;
+  position: absolute !important;
+  top: 0 !important;
+  right: 0 !important;
+  background-color: rgba(240, 248, 255, 0.399) !important;
+}

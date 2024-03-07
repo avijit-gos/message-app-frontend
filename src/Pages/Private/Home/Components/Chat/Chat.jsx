@@ -28,9 +28,14 @@ import AuthButton from "../../../../../Components/ButtonComp/AuthButton";
 import Interests from "../../../../../Config/interests.json";
 import axios from "axios";
 import { socket, useSocket, isConnected } from "../../../../../socket/socket";
+import { useNavigate } from "react-router-dom";
+import { GlobalContext } from "../../../../../Context/Context";
 
 const Chat = () => {
   useSocket();
+  const user = JSON.parse(localStorage.getItem("user"));
+  const navigate = useNavigate();
+  const { setSelectChatId } = GlobalContext();
   const [active, setActive] = useState("my_chat");
   const [openSingleChatModal, setSingleChatModal] = useState(false);
   const [openGroupChatModal, setOpenGroupChatModal] = useState(false);
@@ -130,6 +135,8 @@ const Chat = () => {
         console.log(response.data);
         setSingleChatModal(false);
         setSearchTerm("");
+        handleRedirectToChat(response.data._id);
+        socket.emit("new single chat", { ...response.data, userId: user._id });
       })
       .catch((error) => {
         console.log(error);
@@ -199,7 +206,8 @@ const Chat = () => {
     axios
       .request(config)
       .then((response) => {
-        console.log(JSON.stringify(response.data));
+        console.log(response.data);
+        handleRedirectToChat(response.data._id);
         setName("");
         setBio("");
         setType("");
@@ -207,6 +215,7 @@ const Chat = () => {
         setSelectedUsersId([]);
         setOpenGroupChatModal(false);
         setGroupCreateBtnLoading(false);
+        socket.emit("new chat", { ...response.data, user_id: user._id });
       })
       .catch((error) => {
         console.log(error);
@@ -248,6 +257,13 @@ const Chat = () => {
       .catch((error) => {
         console.log(error);
       });
+  };
+
+  const handleRedirectToChat = (id) => {
+    setSelectChatId(id);
+    if (window.innerWidth < 650) {
+      navigate(`/chat/${id}`);
+    }
   };
 
   return (

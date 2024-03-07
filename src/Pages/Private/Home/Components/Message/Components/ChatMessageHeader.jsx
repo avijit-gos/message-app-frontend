@@ -60,10 +60,10 @@ const ChatMessageHeader = ({ chat }) => {
   //update group details state
   const [openDetailsModal, setOpenDetailsModal] = useState(false);
   const [previousChatName, setPreviousChatName] = useState(
-    chat.isGroup && chat.name
+    chat.isGroup ? chat.name : ""
   );
   const [previousChatBio, setPreviousChatBio] = useState(
-    chat.isGroup && chat.bio
+    chat.isGroup ? chat.bio : ""
   );
   const [disableDetailsBtn, setDisableDetilsBtn] = useState(true);
   const [loadingDetailsBtn, setLoadingDetailsBtn] = useState(false);
@@ -1028,14 +1028,7 @@ const ChatMessageHeader = ({ chat }) => {
           )}
         </Box>
       ) : (
-        <Box className='chat_message_header_section'>
-          {/* <Box className='chat_header_box'>
-            <Button className='back_btn'>
-              <MdOutlineKeyboardBackspace />
-            </Button>
-          </Box> */}
-          Single chat
-        </Box>
+        <Box className='chat_message_header_section'>Single chat</Box>
       )}
     </>
   );

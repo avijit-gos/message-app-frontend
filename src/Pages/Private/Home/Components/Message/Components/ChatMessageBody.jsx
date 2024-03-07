@@ -2,7 +2,7 @@
 
 import { Box } from "@chakra-ui/react";
 import React, { useState, useEffect, useRef } from "react";
-import { socket, useSocket } from "../../../../../../socket/socket";
+import { useSocket } from "../../../../../../socket/socket";
 import CircularLoader from "../../../../../../Components/Loader/CircleLoader/CircleLoader";
 import axios from "axios";
 import MessageCard from "../../../../../../Components/MessageCard/MessageCard";
@@ -74,17 +74,6 @@ const ChatMessageBody = ({ chat, messages, setMessages }) => {
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, []);
-
-  useEffect(() => {
-    socket.on("sent deleted message", (data) => {
-      if (data.chat === chat._id) {
-        // console.log("sent deleted message");
-        const arr = messages;
-        const temp = arr.filter((message) => message._id !== data._id);
-        setMessages(temp);
-      }
-    });
   }, []);
 
   return (

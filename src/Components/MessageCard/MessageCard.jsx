@@ -253,7 +253,19 @@ const MessageCard = ({ message, index, messages, chat, setMessages }) => {
   useEffect(() => {
     socket.on("sent liked message", (data) => {
       if (data._id === message._id) {
+        // console.log("sent liked message");
         setLikes(data.likes);
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    socket.on("sent deleted message", (data) => {
+      if (data.chat === chat._id) {
+        // console.log("sent deleted message");
+        const arr = messages;
+        const temp = arr.filter((message) => message._id !== data._id);
+        setMessages(temp);
       }
     });
   }, []);
