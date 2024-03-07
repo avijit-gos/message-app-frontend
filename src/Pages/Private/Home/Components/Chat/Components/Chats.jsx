@@ -31,12 +31,12 @@ const Chats = () => {
     axios
       .request(config)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         setChats(response.data);
         setLoading(false);
       })
       .catch((error) => {
-        console.log(error);
+        // console.log(error);
         setChats([]);
         setLoading(false);
       });
@@ -47,6 +47,12 @@ const Chats = () => {
       setUpdateChat(chatObj);
     });
   });
+
+  useEffect(() => {
+    socket.on("sent new single chat request", (data) => {
+      console.log(data);
+    });
+  }, []);
 
   return (
     <Box className='chat_cards_section'>

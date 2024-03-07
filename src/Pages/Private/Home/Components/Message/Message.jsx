@@ -63,6 +63,16 @@ const Message = () => {
       });
   }, [selectChatId]);
 
+  useEffect(() => {
+    socket.on("received new message", (data) => {
+      // if room has been selected then append mesage
+      if (data.chat === selectChatId) {
+        setMessages((prev) => [...prev, data]);
+      }
+      // otherwise send notification
+    });
+  }, []);
+
   return (
     <Box className='message_container'>
       {loader ? (
@@ -79,13 +89,19 @@ const Message = () => {
                 messages={messages}
                 setMessages={setMessages}
               />
-              {chat.users.includes(user._id) ||
-              chat.creator._id === user._id ? (
-                <ChatMessageFooter chat={chat} setMessages={setMessages} />
+              {chat.isGroup ? (
+                <>
+                  {chat.users.includes(user._id) ||
+                  chat.creator._id === user._id ? (
+                    <ChatMessageFooter chat={chat} setMessages={setMessages} />
+                  ) : (
+                    <Box className='not_member_group'>
+                      You are not a member of this group
+                    </Box>
+                  )}
+                </>
               ) : (
-                <Box className='not_member_group'>
-                  You are not a member of this group
-                </Box>
+                <ChatMessageFooter chat={chat} setMessages={setMessages} />
               )}
             </>
           ) : (
