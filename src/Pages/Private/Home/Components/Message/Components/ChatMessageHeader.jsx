@@ -31,11 +31,7 @@ import { useDebounce } from "../../../../../../hooks/useDebouncer";
 import CircleLoader from "../../../../../../Components/Loader/CircleLoader/CircleLoader";
 import UserCard2 from "../../../../../../Components/UserCard/UserCard2";
 import PendingUsers from "../../../../../../Components/UserCard/PendingUsers";
-import {
-  socket,
-  useSocket,
-  isConnected,
-} from "../../../../../../socket/socket";
+import { socket, useSocket } from "../../../../../../socket/socket";
 
 const ChatMessageHeader = ({ chat }) => {
   const toast = useToast();
@@ -89,23 +85,18 @@ const ChatMessageHeader = ({ chat }) => {
   const [btnLoading, setBtnLoading] = useState(false);
   const [btnDisable, setBtnDisable] = useState(false);
   const [isDisable, setIsDisable] = useState(true);
-  const [isLoading, setIsLoading] = useState(false);
   const [openLeaveGroupModal, setOpenLeaveGroupModal] = useState(false);
   const [openPendingGroupModal, setOpenPendingGroupModal] = useState(false);
   const [pendingUsers, setPendingUsers] = useState([]);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [openUserModal, setOpenUserModal] = useState(false);
+  const [profileDetails, setProfileDetails] = useState(null);
+  const [openBlockModal, setOpenBlockModal] = useState(false);
 
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
   useSocket();
-
-  useEffect(() => {
-    if (!chat.isGroup) {
-      const result = getChatName(chat.users, user);
-      // setChatName(result.name);
-      // setChatBio(result.bio);
-    }
-  }, [chat]);
 
   const handleRedirectToChat = (id) => {
     setSelectChatId("");
@@ -209,6 +200,8 @@ const ChatMessageHeader = ({ chat }) => {
     setOpenDetailsModal(false);
     setOpenBioModal(false);
     setOpenDeleteModal(false);
+    setOpenUserModal(false);
+    setOpenBlockModal(false);
   };
 
   const handleUpdateGroupInfo = () => {
@@ -596,6 +589,68 @@ const ChatMessageHeader = ({ chat }) => {
     });
   });
 
+  const handleOpenUserModal = (id) => {
+    setIsLoading(true);
+    setOpenUserModal(true);
+    let config = {
+      method: "get",
+      maxBodyLength: Infinity,
+      url: `${process.env.REACT_APP_BASE_URL}api/user/${id}`,
+      headers: {
+        "x-access-token": localStorage.getItem("token"),
+      },
+    };
+
+    axios
+      .request(config)
+      .then((response) => {
+        console.log(response.data);
+        setProfileDetails(response.data);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const handleBlockedChat = () => {
+    setOpenBlockModal(false);
+    let config = {
+      method: "put",
+      maxBodyLength: Infinity,
+      url: `${process.env.REACT_APP_BASE_URL}api/chat/block/singleChat/${chat._id}`,
+      headers: {
+        "x-access-token": localStorage.getItem("token"),
+      },
+    };
+
+    axios
+      .request(config)
+      .then((response) => {
+        // console.log(response.data.updateData);
+        toast({
+          title: "Success",
+          description: `${response.data.msg}`,
+          status: "success",
+          duration: 5000,
+          isClosable: true,
+        });
+        setOpenBlockModal(false);
+        socket.emit("block user", response.data);
+      })
+      .catch((error) => {
+        console.log(error.response.data.error.message);
+        toast({
+          title: "Error",
+          description: `${error.response.data.error.message}`,
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
+        setOpenBlockModal(false);
+      });
+  };
+
   return (
     <>
       {/* Group profile image upload modal */}
@@ -908,6 +963,79 @@ const ChatMessageHeader = ({ chat }) => {
         />
       )}
 
+      {/* Open Group user modal */}
+      {openUserModal && (
+        <ModalComp
+          isOpen={openUserModal}
+          onClose={handleCloseDetailsModal}
+          title={<>User Profile</>}
+          body={
+            <Box className='modal_body_user_section'>
+              {isLoading ? (
+                <>
+                  <CircleLoader />
+                </>
+              ) : (
+                <>
+                  {profileDetails ? (
+                    <>
+                      <Avatar
+                        src={profileDetails.p_i}
+                        className='modal_profile_main_avatar'
+                      />
+                      <Box className='modal_profile_name'>
+                        {profileDetails.name}
+                      </Box>
+                      <Box className='modal_profile_bio'>
+                        {profileDetails.bio}
+                      </Box>
+
+                      <Box className='hobbies_section'>
+                        {profileDetails.hobbies.map((data) => (
+                          <Box key={data} className='hobby_box'>
+                            {data}
+                          </Box>
+                        ))}
+                      </Box>
+                    </>
+                  ) : (
+                    <Box className='empty_profile'>No data found</Box>
+                  )}
+                </>
+              )}
+            </Box>
+          }
+        />
+      )}
+
+      {/* Block chat modal */}
+      {openBlockModal && (
+        <ModalComp
+          isOpen={openBlockModal}
+          onClose={handleCloseDetailsModal}
+          title={<>Delete group</>}
+          body={
+            <Box className='modal_body_input_section'>
+              <dpan className='delete_msg'>
+                Do you want to block this user's chat?
+              </dpan>
+            </Box>
+          }
+          footer={
+            <Box className='modal_footer_section'>
+              <AuthButton
+                disable={false}
+                loading={false}
+                text='Block'
+                className='modal_update_btn delete_btn'
+                disableClassName='disable_modal_update_btn disable_delete_btn'
+                clickHandler={handleBlockedChat}
+              />
+            </Box>
+          }
+        />
+      )}
+
       {chat.isGroup ? (
         <Box className='chat_message_header_section'>
           <Box className='chat_header_box'>
@@ -1028,7 +1156,52 @@ const ChatMessageHeader = ({ chat }) => {
           )}
         </Box>
       ) : (
-        <Box className='chat_message_header_section'>Single chat</Box>
+        <Box className='chat_message_header_section'>
+          <Box className='chat_header_box'>
+            <Button className='back_btn' onClick={handleRedirectToChat}>
+              <MdOutlineKeyboardBackspace />
+            </Button>
+            <Avatar
+              src={getChatName(chat.users, user).p_i}
+              className='chat_header_avatar'
+            />
+            <Box className='chat_info_section'>
+              <p className='chat_header_name'>
+                {getChatName(chat.users, user).name}{" "}
+              </p>
+              <span className='chat_header_bio'>
+                {getChatName(chat.users, user).bio}{" "}
+              </span>
+            </Box>
+          </Box>
+          {!chat.blocked.isBlocked && (
+            <Menu>
+              <MenuButton
+                className='chat_header_menu_btn'
+                as={Button}
+                rightIcon={<MdMoreVert />}></MenuButton>
+              <MenuList>
+                <MenuItem
+                  className='menu_item'
+                  onClick={() =>
+                    handleOpenUserModal(getChatName(chat.users, user)._id)
+                  }>
+                  View user
+                </MenuItem>
+                <MenuItem
+                  className='menu_item'
+                  onClick={() => setOpenBlockModal(true)}>
+                  Block
+                </MenuItem>
+                <MenuItem
+                  className='menu_item delete'
+                  onClick={() => setOpenDeleteModal(true)}>
+                  Delete chat
+                </MenuItem>
+              </MenuList>
+            </Menu>
+          )}
+        </Box>
       )}
     </>
   );

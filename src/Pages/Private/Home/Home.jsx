@@ -11,8 +11,10 @@ import InterestModal from "../../../Components/ModalComp/InterestModal";
 import Interests from "../../../Config/interests.json";
 import AuthButton from "../../../Components/ButtonComp/AuthButton";
 import axios from "axios";
+import { socket, useSocket } from "../../../socket/socket";
 
 const Home = () => {
+  useSocket();
   const toast = useToast();
   const { setPageType, windowWidth, selectChatId } = GlobalContext();
   const user = JSON.parse(localStorage.getItem("user"));
@@ -96,6 +98,9 @@ const Home = () => {
       });
   };
 
+  useEffect(() => {
+    socket.emit("join user room", user._id);
+  }, []);
   return (
     <Layout>
       <Box className='home_container'>
@@ -134,7 +139,11 @@ const Home = () => {
           />
         )}
         <Chat />
-        {selectChatId ? <Message /> : <Box className="unselected_chat_container">No chat selected</Box>}
+        {selectChatId ? (
+          <Message />
+        ) : (
+          <Box className='unselected_chat_container'>No chat selected</Box>
+        )}
       </Box>
     </Layout>
   );
