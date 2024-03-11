@@ -1,5 +1,4 @@
 /** @format */
-
 import {
   Avatar,
   Box,
@@ -14,29 +13,29 @@ import {
 } from "@chakra-ui/react";
 import React, { useState, useEffect, useRef } from "react";
 import { MdOutlineKeyboardBackspace } from "react-icons/md";
-import { getChatName } from "../../../../../../Utils/getChatName";
+import { getChatName } from "../../../../Utils/getChatName";
 import { MdMoreVert } from "react-icons/md";
-import { GlobalContext } from "../../../../../../Context/Context";
+import { GlobalContext } from "../../../../Context/Context";
 import { useNavigate, useParams } from "react-router-dom";
-import ModalComp from "../../../../../../Components/ModalComp/ModalComp";
+import ModalComp from "../../../../Components/ModalComp/ModalComp";
 import { LuUploadCloud } from "react-icons/lu";
 import { MdClose } from "react-icons/md";
-import AuthButton from "../../../../../../Components/ButtonComp/AuthButton";
-import InputComp from "../../../../../../Components/InputComp/InputComp";
-import TextareaComp from "../../../../../../Components/InputComp/TextareaComp";
-import FullPageModal from "../../../../../../Components/ModalComp/FullPageModal";
+import AuthButton from "../../../../Components/ButtonComp/AuthButton";
+import InputComp from "../../../../Components/InputComp/InputComp";
+import TextareaComp from "../../../../Components/InputComp/TextareaComp";
+import FullPageModal from "../../../../Components/ModalComp/FullPageModal";
 import axios from "axios";
-import Members from "../../../../../../Components/UserCard/Members";
-import { useDebounce } from "../../../../../../hooks/useDebouncer";
-import CircleLoader from "../../../../../../Components/Loader/CircleLoader/CircleLoader";
-import UserCard2 from "../../../../../../Components/UserCard/UserCard2";
-import PendingUsers from "../../../../../../Components/UserCard/PendingUsers";
-import { socket, useSocket } from "../../../../../../socket/socket";
+import { useDebounce } from "../../../../hooks/useDebouncer";
+import Members from "../../../../Components/UserCard/Members";
+import CircleLoader from "../../../../Components/Loader/CircleLoader/CircleLoader";
+import UserCard2 from "../../../../Components/UserCard/UserCard2";
+import PendingUsers from "../../../../Components/UserCard/PendingUsers";
+import { socket, useSocket } from "../../../../socket/socket";
 
-const ChatMessageHeader = ({ chat }) => {
+const ChatHeader = ({ chat }) => {
   const toast = useToast();
   const id = useParams();
-  const { selectChatId, setSelectChatId } = GlobalContext();
+  // const { selectChatId, setSelectChatId } = GlobalContext();
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("user"));
   const [chatName, setChatName] = useState(chat.isGroup && chat.name);
@@ -98,7 +97,7 @@ const ChatMessageHeader = ({ chat }) => {
   useSocket();
 
   const handleRedirectToChat = (id) => {
-    setSelectChatId("");
+    // setSelectChatId("");
     if (window.innerWidth < 650) {
       navigate(-1);
     }
@@ -569,7 +568,7 @@ const ChatMessageHeader = ({ chat }) => {
       .then((response) => {
         console.log(response.data);
         socket.emit("update chat", response.data.chat);
-        setSelectChatId("");
+        // setSelectChatId("");
         if (window.innerWidth < 650) {
           navigate(`/`);
         }
@@ -699,7 +698,6 @@ const ChatMessageHeader = ({ chat }) => {
           }
         />
       )}
-
       {/* Update group name modal */}
       {openDetailsModal && (
         <ModalComp
@@ -742,7 +740,6 @@ const ChatMessageHeader = ({ chat }) => {
           }
         />
       )}
-
       {/* Update group bio modal */}
       {openBioModal && (
         <ModalComp
@@ -776,7 +773,6 @@ const ChatMessageHeader = ({ chat }) => {
           }
         />
       )}
-
       {/* Group members modal */}
       {openAdminModal && (
         <FullPageModal
@@ -791,8 +787,8 @@ const ChatMessageHeader = ({ chat }) => {
                     <Members
                       key={data._id}
                       user={data}
+                      users={users}
                       setUsers={setUsers}
-                      users={user}
                     />
                   ))}
                 </>
@@ -803,7 +799,6 @@ const ChatMessageHeader = ({ chat }) => {
           }
         />
       )}
-
       {/* Add new members in group chat */}
       {openUsersModal && (
         <FullPageModal
@@ -879,7 +874,6 @@ const ChatMessageHeader = ({ chat }) => {
           }
         />
       )}
-
       {/* Leave group modal */}
       {openLeaveGroupModal && (
         <ModalComp
@@ -905,7 +899,6 @@ const ChatMessageHeader = ({ chat }) => {
           }
         />
       )}
-
       {/* Group join request modal */}
       {openPendingGroupModal && (
         <FullPageModal
@@ -933,7 +926,6 @@ const ChatMessageHeader = ({ chat }) => {
           }
         />
       )}
-
       {/* Group delete modal */}
       {openDeleteModal && (
         <ModalComp
@@ -961,7 +953,6 @@ const ChatMessageHeader = ({ chat }) => {
           }
         />
       )}
-
       {/* Open Group user modal */}
       {openUserModal && (
         <ModalComp
@@ -1006,7 +997,6 @@ const ChatMessageHeader = ({ chat }) => {
           }
         />
       )}
-
       {/* Block chat modal */}
       {openBlockModal && (
         <ModalComp
@@ -1033,23 +1023,22 @@ const ChatMessageHeader = ({ chat }) => {
             </Box>
           }
         />
-      )}
-
+      )}{" "}
       {chat.isGroup ? (
-        <Box className='chat_message_header_section'>
-          <Box className='chat_header_box'>
+        <Box className='chat_page_header'>
+          <Box className='chat_page_header_box'>
             <Button className='back_btn' onClick={handleRedirectToChat}>
               <MdOutlineKeyboardBackspace />
             </Button>
             <Avatar src={p_i} className='chat_header_avatar' />
-            <Box className='chat_info_section'>
+
+            <Box className='chat_page_group_info_section'>
               <p className='chat_header_name'>
                 {chatName} <span className='chat_header_type'>{chat.cat}</span>
               </p>
               <span className='chat_header_bio'>{chatBio}</span>
             </Box>
           </Box>
-
           {chat.users.includes(user._id) || chat.creator._id === user._id ? (
             <Menu>
               <MenuButton
@@ -1155,8 +1144,8 @@ const ChatMessageHeader = ({ chat }) => {
           )}
         </Box>
       ) : (
-        <Box className='chat_message_header_section'>
-          <Box className='chat_header_box'>
+        <Box className='chat_page_header'>
+          <Box className='chat_page_header_box'>
             <Button className='back_btn' onClick={handleRedirectToChat}>
               <MdOutlineKeyboardBackspace />
             </Button>
@@ -1164,7 +1153,7 @@ const ChatMessageHeader = ({ chat }) => {
               src={getChatName(chat.users, user).p_i}
               className='chat_header_avatar'
             />
-            <Box className='chat_info_section'>
+            <Box className='chat_page_info_section'>
               <p className='chat_header_name'>
                 {getChatName(chat.users, user).name}{" "}
               </p>
@@ -1206,4 +1195,4 @@ const ChatMessageHeader = ({ chat }) => {
   );
 };
 
-export default ChatMessageHeader;
+export default ChatHeader;

@@ -72,9 +72,7 @@
   display: flex;
   align-items: center;
 }
-.back_btn {
-  background-color: transparent !important;
-}
+
 .chat_header_avatar {
   width: 32px !important;
   height: 32px !important;
@@ -486,4 +484,53 @@
   top: 0 !important;
   right: 0 !important;
   background-color: rgba(240, 248, 255, 0.399) !important;
+}
+.modal_body_user_section {
+  width: 100%;
+  text-align: center;
+}
+.empty_profile {
+  width: 100%;
+  text-align: center;
+  font-weight: 500;
+  font-size: 0.75rem;
+}
+.modal_profile_main_avatar {
+  width: 100px !important;
+  height: 100px !important;
+  margin-bottom: 5px !important;
+}
+.modal_profile_name {
+  font-weight: bold;
+  font-size: 1.05rem;
+}
+.modal_profile_bio {
+  font-weight: 400;
+  font-size: 0.7rem;
+  color: rgb(114, 114, 114);
+}
+.hobbies_section {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 3px;
+}
+.hobby_box {
+  background-color: var(--secondary-color);
+  color: whitesmoke;
+  font-size: 0.725rem;
+  font-weight: 500;
+  border-radius: 20px;
+  margin: 1px;
+  padding: 3px 12px;
+}
+.blocked_message {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  font-size: 0.775rem;
+  color: var(--secondary-color);
 }

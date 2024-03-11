@@ -22,6 +22,7 @@ const Message = () => {
   const [loader, setLoader] = useState(false);
   const [chat, setChat] = useState(null);
   const [messages, setMessages] = useState([]);
+  const [updateChat, setUpdateChat] = useState(null);
 
   useSocket();
 
@@ -61,15 +62,23 @@ const Message = () => {
         setChat(null);
         setLoader(false);
       });
-  }, [selectChatId]);
+  }, [selectChatId, updateChat]);
 
   useEffect(() => {
-    socket.on("received new message", (data) => {
+    socket.off("received new message").on("received new message", (data) => {
       // if room has been selected then append mesage
       if (data.chat === selectChatId) {
         setMessages((prev) => [...prev, data]);
       }
       // otherwise send notification
+    });
+  }, []);
+
+  useEffect(() => {
+    console.log("useEffect in footer");
+    socket.on("send block chat", (data) => {
+      // console.log("send block chat", data.updateData);
+      setUpdateChat(data.updateData);
     });
   }, []);
 

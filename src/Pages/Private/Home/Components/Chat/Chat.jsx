@@ -207,7 +207,7 @@ const Chat = () => {
       .request(config)
       .then((response) => {
         console.log(response.data);
-        handleRedirectToChat(response.data._id);
+        handleRedirectToChat(response.data.chat._id);
         setName("");
         setBio("");
         setType("");

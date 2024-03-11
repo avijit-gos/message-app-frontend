@@ -97,82 +97,90 @@ const ChatMessageFooter = ({ chat, setMessages }) => {
   }, [ref]);
 
   return (
-    <Box className='chat_message_footer_section'>
-      {/* Preview image section */}
-      {prevImage && (
-        <Box className='message_preview_image_section'>
-          <Img src={prevImage} className='message_preview_image' />
-          <Button className='close_btn' onClick={closePreviewImage}>
-            <MdOutlineClose />
-          </Button>
+    <>
+      {chat.blocked.isBlocked ? (
+        <Box className='chat_message_footer_section blocked_message'>
+          You cannot send messages
         </Box>
-      )}
+      ) : (
+        <Box className='chat_message_footer_section'>
+          {/* Preview image section */}
+          {prevImage && (
+            <Box className='message_preview_image_section'>
+              <Img src={prevImage} className='message_preview_image' />
+              <Button className='close_btn' onClick={closePreviewImage}>
+                <MdOutlineClose />
+              </Button>
+            </Box>
+          )}
 
-      {/* Emoji section */}
-      {openEmoji && (
-        <Box className='emoji_container' ref={ref}>
-          <EmojiPicker
-            className='emoji_section'
-            height={400}
-            width={300}
-            onEmojiClick={onEmojiClick}
-          />
-        </Box>
-      )}
+          {/* Emoji section */}
+          {openEmoji && (
+            <Box className='emoji_container' ref={ref}>
+              <EmojiPicker
+                className='emoji_section'
+                height={400}
+                width={300}
+                onEmojiClick={onEmojiClick}
+              />
+            </Box>
+          )}
 
-      {selectReplyMessage && (
-        <div className='reply_message_section'>
-          <Button
-            className='reply_message_close_btn'
-            onClick={() => setSelectReplyMessage(null)}>
-            <AiOutlineClose />
-          </Button>
-          <div className='reply_message_card'>
-            <div className='reply_message_text'>
-              {handleDecrypt(selectReplyMessage.content)}
+          {selectReplyMessage && (
+            <div className='reply_message_section'>
+              <Button
+                className='reply_message_close_btn'
+                onClick={() => setSelectReplyMessage(null)}>
+                <AiOutlineClose />
+              </Button>
+              <div className='reply_message_card'>
+                <div className='reply_message_text'>
+                  {handleDecrypt(selectReplyMessage.content)}
+                </div>
+                <div className='reply_message_user_name'>
+                  {selectReplyMessage.user.name}
+                </div>
+              </div>
             </div>
-            <div className='reply_message_user_name'>
-              {selectReplyMessage.user.name}
-            </div>
-          </div>
-        </div>
-      )}
+          )}
 
-      <Input
-        type='text'
-        placeholder='Enter message'
-        className='message_input'
-        value={message}
-        onChange={(e) => setMessage(e.target.value.slice(0, 400))}
-      />
-      <Box className='chat_message_buttons_section'>
-        <label htmlFor='image_file' className='image_label'>
-          <GrGallery className='message_footer_icon' />
           <Input
-            type='file'
-            id='image_file'
-            className='file_input'
-            onChange={(e) => handleImageChange(e)}
-            accept='image/*'
+            type='text'
+            placeholder='Enter message'
+            className='message_input'
+            value={message}
+            onChange={(e) => setMessage(e.target.value.slice(0, 400))}
           />
-        </label>
+          <Box className='chat_message_buttons_section'>
+            <label htmlFor='image_file' className='image_label'>
+              <GrGallery className='message_footer_icon' />
+              <Input
+                type='file'
+                id='image_file'
+                className='file_input'
+                onChange={(e) => handleImageChange(e)}
+                accept='image/*'
+              />
+            </label>
 
-        <Button
-          className='message_footer_btn'
-          onClick={() => setOpenEmoji(true)}>
-          <BsEmojiLaughing className='message_footer_icon' />
-        </Button>
+            <Button
+              className='message_footer_btn'
+              onClick={() => setOpenEmoji(true)}>
+              <BsEmojiLaughing className='message_footer_icon' />
+            </Button>
 
-        <AuthButton
-          loading={loading}
-          disable={disable}
-          className='message_send_btn'
-          disableClassName='disable_message_send_btn'
-          clickHandler={handleSendMessage}
-          text={<BsSendFill />}
-        />
-      </Box>
-    </Box>
+            <AuthButton
+              loading={loading}
+              disable={disable}
+              className='message_send_btn'
+              disableClassName='disable_message_send_btn'
+              clickHandler={handleSendMessage}
+              text={<BsSendFill />}
+            />
+          </Box>
+        </Box>
+      )}
+    </>
   );
 };
 
