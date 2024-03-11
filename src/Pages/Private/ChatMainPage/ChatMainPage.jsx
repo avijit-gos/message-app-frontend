@@ -1,31 +1,41 @@
 /** @format */
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Box, Button } from "@chakra-ui/react";
 import { GlobalContext } from "../../../Context/Context";
 import CircleLoader from "../../../Components/Loader/CircleLoader/CircleLoader";
 import "./ChatMainPage.css";
-import { MdOutlineKeyboardBackspace } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import ChatMessageHeader from "../Home/Components/Message/Components/ChatMessageHeader";
-import ChatMessageBody from "../Home/Components/Message/Components/ChatMessageBody";
-import ChatMessageFooter from "../Home/Components/Message/Components/ChatMessageFooter";
 import { socket, useSocket, isConnected } from "../../../socket/socket";
+import Layout from "../../../Layout/Layout";
+import ChatHeader from "./Components/ChatHeader";
+import ChatBody from "./Components/ChatBody";
+import ChatFooter from "./Components/ChatFooter";
+import { MdOutlineKeyboardBackspace } from "react-icons/md";
 
 const ChatMainPage = () => {
   const { id } = useParams();
   const user = JSON.parse(localStorage.getItem("user"));
   const navigate = useNavigate();
-  const { selectChatId, setSelectChatId, selectChat, setSelectChat } =
-    GlobalContext();
+  const {
+    setPageType,
+    selectChatId,
+    setSelectChatId,
+    selectChat,
+    setSelectChat,
+  } = GlobalContext();
   const [loader, setLoader] = useState(false);
   const [chat, setChat] = useState(null);
   const [messages, setMessages] = useState([]);
   const [updateChat, setUpdateChat] = useState(null);
 
   useSocket();
+
+  useLayoutEffect(() => {
+    setPageType("chat");
+  });
 
   const goBack = () => {
     if (window.innerWidth > 650) {
@@ -84,51 +94,39 @@ const ChatMainPage = () => {
   }, []);
 
   return (
-    <Box className='message_container'>
-      {loader ? (
-        <Box className='main_chat_page_leader'>
-          <CircleLoader />
-        </Box>
-      ) : (
-        <>
-          {chat && selectChat ? (
-            <>
-              <ChatMessageHeader chat={chat} />
-              <ChatMessageBody
-                chat={chat}
-                messages={messages}
-                setMessages={setMessages}
-              />
-              {chat.isGroup ? (
-                <>
-                  {chat.users.includes(user._id) ||
-                  chat.creator._id === user._id ? (
-                    <ChatMessageFooter chat={chat} setMessages={setMessages} />
-                  ) : (
-                    <Box className='not_member_group'>
-                      You are not a member of this group
-                    </Box>
-                  )}
-                </>
-              ) : (
-                <ChatMessageFooter chat={chat} setMessages={setMessages} />
-              )}
-            </>
-          ) : (
-            <Box className='empty_chat_container'>
-              {/* Header */}
-              <Box className='empty_chat_header'>
-                <Button className='goback_btn' onClick={goBack}>
-                  <MdOutlineKeyboardBackspace />
-                </Button>
+    <Layout>
+      <Box className='chat_main_page_container'>
+        {loader ? (
+          <Box className='chat_page_loader'>
+            <CircleLoader />
+          </Box>
+        ) : (
+          <>
+            {chat ? (
+              <>
+                <ChatHeader chat={chat} />
+                <ChatBody
+                  chat={chat}
+                  messages={messages}
+                  setMessages={setMessages}
+                />
+              </>
+            ) : (
+              <Box className='empty_chat_container'>
+                {/* Header */}
+                <Box className='empty_chat_header'>
+                  <Button className='goback_btn' onClick={goBack}>
+                    <MdOutlineKeyboardBackspace />
+                  </Button>
+                </Box>
+                {/* Body */}
+                <Box className='empty_chat_body'>No chat found</Box>
               </Box>
-              {/* Body */}
-              <Box className='empty_chat_body'>No chat found</Box>
-            </Box>
-          )}
-        </>
-      )}
-    </Box>
+            )}
+          </>
+        )}
+      </Box>
+    </Layout>
   );
 };
 
