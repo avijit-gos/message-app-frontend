@@ -68,7 +68,6 @@
   line-height: 12px;
 }
 .chat_page_body_section {
-  border: 1px solid red;
   width: 100%;
   height: 85vh;
 }
@@ -80,7 +79,6 @@
   justify-content: center;
 }
 .messages_section {
-  border: 1px solid red;
   width: 100%;
   height: 84.5vh;
   overflow: scroll;
@@ -92,4 +90,86 @@
 .messages_section {
   -ms-overflow-style: none; /* Internet Explorer and Edge */
   scrollbar-width: none; /* Firefox */
+}
+
+/* Timeline */
+.timeline_card_container {
+  border: 1px solid rgb(17, 17, 17);
+  padding: 7px;
+  width: 100%;
+  height: 86vh;
+  overflow: scroll;
+}
+.timeline_card_container::-webkit-scrollbar {
+  display: none;
+}
+/* Hide the scrollbar for Internet Explorer, Edge and Firefox */
+.timeline_card_container {
+  -ms-overflow-style: none; /* Internet Explorer and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+.timeline_card_section {
+  width: 100%;
+  height: auto;
+  position: relative;
+  margin-bottom: 3px;
+  overflow: hidden;
+}
+.date_section {
+  display: flex;
+  align-items: flex-start;
+}
+.timeline_icon_section {
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  margin-right: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--secondary-color);
+  background-color: rgb(226, 225, 225);
+}
+.timeline_icon {
+  color: whitesmoke;
+  font-size: 1.5rem;
+}
+.timeline_date {
+  font-weight: bold;
+  font-size: 0.975rem;
+}
+.timeline_message_section {
+  padding: 5px;
+  margin-bottom: 3px;
+  font-size: 0.8rem;
+  font-weight: 400;
+  background-color: white;
+  z-index: 1;
+}
+.timeline_inner_card {
+  position: relative;
+}
+.marker {
+  /* width: 100%;
+  height: 1px;
+  background-color: rgb(195, 195, 195);
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translate(-50%, 0);
+  z-index: -1; */
+}
+.main_marker {
+  width: 2px;
+  height: 100%;
+  background-color: rgb(226, 225, 225);
+  position: absolute;
+  bottom: 0;
+  left: 14px;
+  z-index: -1;
+}
+.timeline_username {
+  margin-right: 2px;
+  font-weight: bold;
+  font-size: 0.8rem;
 }

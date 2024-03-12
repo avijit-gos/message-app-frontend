@@ -6,6 +6,7 @@ import CircleLoader from "../../../../Components/Loader/CircleLoader/CircleLoade
 import MessageCard from "../../../../Components/MessageCard/MessageCard";
 import axios from "axios";
 import { useSocket } from "../../../../socket/socket";
+import Timeline from "./Timeline";
 
 const ChatBody = ({ chat, messages, setMessages }) => {
   const bottomRef = useRef(null);
@@ -15,6 +16,7 @@ const ChatBody = ({ chat, messages, setMessages }) => {
   const [loading, setLoading] = useState(false);
   const [subLoader, setSubLoader] = useState(false);
   const [active, setactive] = useState("message");
+  const [timelines, setTimeLines] = useState([]);
   useSocket();
 
   const scrollToBottom = () => {
@@ -51,6 +53,30 @@ const ChatBody = ({ chat, messages, setMessages }) => {
         .catch((error) => {
           console.log(error);
         });
+    } else {
+      let config = {
+        method: "get",
+        maxBodyLength: Infinity,
+        url: `http://localhost:8000/api/timeline/${chat._id}?page=${page}&limit=${limit}`,
+        headers: {
+          "x-access-token": localStorage.getItem("token"),
+        },
+      };
+
+      axios
+        .request(config)
+        .then((response) => {
+          console.log(response.data);
+          if (page !== 1) {
+            setTimeLines((prev) => [...prev, response.data]);
+          } else {
+            setTimeLines(response.data);
+          }
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
   }, [page, chat._id, active]);
 
@@ -75,6 +101,7 @@ const ChatBody = ({ chat, messages, setMessages }) => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
   return (
     <Box Box className='chat_page_body_section' onScroll={handleScroll}>
       {loading ? (
@@ -128,7 +155,7 @@ const ChatBody = ({ chat, messages, setMessages }) => {
                 )}
               </>
             ) : (
-              <>Timeline</>
+              <Timeline timelines={timelines} />
             )}
           </>
         </>

@@ -6,6 +6,7 @@ import { useSocket } from "../../../../../../socket/socket";
 import CircularLoader from "../../../../../../Components/Loader/CircleLoader/CircleLoader";
 import axios from "axios";
 import MessageCard from "../../../../../../Components/MessageCard/MessageCard";
+import Timeline from "./Timeline";
 
 const ChatMessageBody = ({ chat, messages, setMessages }) => {
   const bottomRef = useRef(null);
@@ -15,6 +16,7 @@ const ChatMessageBody = ({ chat, messages, setMessages }) => {
   const [loading, setLoading] = useState(false);
   const [subLoader, setSubLoader] = useState(false);
   const [active, setactive] = useState("message");
+  const [timelines, setTimeLines] = useState([]);
   useSocket();
 
   const scrollToBottom = () => {
@@ -45,6 +47,30 @@ const ChatMessageBody = ({ chat, messages, setMessages }) => {
             setMessages(response.data.reverse());
           } else {
             setMessages((prev) => [...response.data.reverse(), ...prev]);
+          }
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else {
+      let config = {
+        method: "get",
+        maxBodyLength: Infinity,
+        url: `http://localhost:8000/api/timeline/${chat._id}?page=${page}&limit=${limit}`,
+        headers: {
+          "x-access-token": localStorage.getItem("token"),
+        },
+      };
+
+      axios
+        .request(config)
+        .then((response) => {
+          console.log(response.data);
+          if (page !== 1) {
+            setTimeLines((prev) => [...prev, response.data]);
+          } else {
+            setTimeLines(response.data);
           }
           setLoading(false);
         })
@@ -129,7 +155,7 @@ const ChatMessageBody = ({ chat, messages, setMessages }) => {
                 )}
               </>
             ) : (
-              <>Timeline</>
+              <Timeline timelines={timelines} />
             )}
           </>
         </>
