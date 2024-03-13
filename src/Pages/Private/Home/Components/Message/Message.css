@@ -428,7 +428,7 @@
   cursor: pointer;
 }
 .active_message_tab_section {
-  background-color: var(--secondary-color);
+  background-color: var(--secondary-color) !important;
   color: whitesmoke;
 }
 .message_cards_section {

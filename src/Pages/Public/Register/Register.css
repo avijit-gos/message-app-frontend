@@ -55,7 +55,7 @@
   font-size: 0.825rem !important;
   color: whitesmoke !important;
   background-color: var(--secondary-color) !important;
-  cursor: no-drop !important;
+  /* cursor: no-drop !important; */
 }
 .login_link {
   width: 100%;

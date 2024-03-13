@@ -3,5 +3,6 @@
   "2": "update group's profile image.",
   "3": "update group's name.",
   "4": "update group's bio.",
-  "5": "user joined this group."
+  "5": "user joined this group.",
+  "6": "select as admin"
 }
