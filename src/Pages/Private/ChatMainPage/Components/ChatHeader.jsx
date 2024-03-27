@@ -33,6 +33,7 @@ import PendingUsers from "../../../../Components/UserCard/PendingUsers";
 import { socket, useSocket } from "../../../../socket/socket";
 
 const ChatHeader = ({ chat }) => {
+  //const user = JSON.parse(localStorage.getItem("user"));
   const toast = useToast();
   const id = useParams();
   // const { selectChatId, setSelectChatId } = GlobalContext();
@@ -95,6 +96,8 @@ const ChatHeader = ({ chat }) => {
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
   useSocket();
+
+  console.log(chat);
 
   const handleRedirectToChat = (id) => {
     // setSelectChatId("");
@@ -1162,7 +1165,7 @@ const ChatHeader = ({ chat }) => {
               </span>
             </Box>
           </Box>
-          {!chat.blocked.isBlocked && (
+          {!chat.blocked.isBlocked ? (
             <Menu>
               <MenuButton
                 className='chat_header_menu_btn'
@@ -1188,6 +1191,16 @@ const ChatHeader = ({ chat }) => {
                 </MenuItem>
               </MenuList>
             </Menu>
+          ) : (
+            <>
+              {chat.blocked.blockedBy.includes(user._id) && (
+                <Button
+                  className='join_chat_btn'
+                  onClick={() => handleBlockedChat()}>
+                  Unblock user
+                </Button>
+              )}
+            </>
           )}
         </Box>
       )}

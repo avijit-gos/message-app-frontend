@@ -49,18 +49,21 @@
 }
 .profile_image_section {
   width: 100%;
-  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .avatar_section {
-  width: 100% !important;
-  height: 200px !important;
-  border-radius: 5px;
+  width: 150px !important;
+  height: 150px !important;
+  border-radius: 50%;
   position: relative;
+  padding: 1px;
 }
 .image_loading_section {
-  width: 100% !important;
-  height: 200px !important;
-  border-radius: 5px !important;
+  width: 150px !important;
+  height: 150px !important;
+  border-radius: 50% !important;
   background-color: rgba(0, 0, 0, 0.425);
   z-index: 10;
   position: absolute;
@@ -71,10 +74,13 @@
   justify-content: center;
 }
 .user_drawer_avatar {
-  width: 100% !important;
-  height: 200px !important;
-  border-radius: 5px !important;
+  width: 150px !important;
+  height: 150px !important;
+  border-radius: 50% !important;
   border: 2px solid rgb(112, 112, 112);
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
 }
 .file_input {
   display: none;
@@ -214,12 +220,11 @@
   scrollbar-width: none; /* Firefox */
 }
 .accordion_header {
-  font-weight: bold !important;
-  font-family: "Pacifico", cursive;
+  font-size: 0.825rem !important;
+  font-weight: 500 !important;
+  /* font-family: "Pacifico", cursive; */
 }
-.drawer_accordion_section {
-  margin: 9px 0;
-}
+
 .update_section {
   width: 100%;
   height: auto;
@@ -290,4 +295,29 @@
   border-radius: 15px;
   padding: 2px 12px;
   margin: 2px;
+}
+.settings_box_header {
+  margin-bottom: 5px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.drawer_accordion_section {
+  margin: 9px 0;
+  width: 100%;
+  height: auto;
+}
+.settings_box_name {
+  padding: 6px;
+  font-weight: bold;
+  font-size: 0.825rem;
+  color: var(--secondary-color);
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+.settings_box_icon {
+  font-size: 1rem;
+  margin-right: 7px;
 }

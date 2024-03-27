@@ -110,6 +110,20 @@ const ChatMainPage = () => {
                   messages={messages}
                   setMessages={setMessages}
                 />
+                {chat.isGroup ? (
+                  <>
+                    {chat.users.includes(user._id) ||
+                    chat.creator._id === user._id ? (
+                      <ChatFooter chat={chat} setMessages={setMessages} />
+                    ) : (
+                      <Box className='not_member_group'>
+                        You are not a member of this group
+                      </Box>
+                    )}
+                  </>
+                ) : (
+                  <ChatFooter chat={chat} setMessages={setMessages} />
+                )}
               </>
             ) : (
               <Box className='empty_chat_container'>

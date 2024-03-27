@@ -3,7 +3,9 @@
 :root {
   --primary-color: rgba(46, 213, 115, 1);
   --secondary-color: rgb(34, 39, 48);
+  /* --secondary-color: #7e57c2; */
   --disable-secondary-color: rgb(122, 123, 126);
+  /* --disable-secondary-color: #b39ddb; */
   --tertiary-color: rgb(239, 239, 239);
 }
 .layout_container {

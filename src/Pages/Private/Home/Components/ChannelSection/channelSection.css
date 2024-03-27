@@ -1,0 +1,110 @@
+/** @format */
+
+.channel_page_container {
+  border: 1px solid red;
+  width: 100%;
+  height: 92.7vh;
+}
+.channel_loading_page {
+  border: 1px solid red;
+  width: 100%;
+  height: 92.7vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.empty_channel_container {
+  border: 1px solid red;
+  width: 100%;
+  height: 92.7vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  font-size: 0.825rem;
+}
+.channel_header {
+  width: 100%;
+  height: 7vh;
+  display: flex;
+  align-items: center;
+  padding: 7px;
+}
+.channel_box {
+  width: 100%;
+  height: 7vh;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+}
+.channel_back_btn {
+  background-color: transparent !important;
+}
+.channel_info_box {
+  width: 100%;
+  height: 7vh;
+  line-height: 15px;
+  padding: 5px;
+}
+.channel_name_section {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+.channel_header_name {
+  font-weight: bold;
+  font-size: 0.95rem;
+}
+.channel_header_type {
+  font-size: 0.6rem;
+  font-weight: 400;
+  padding: 2px 7px;
+  border-radius: 12px;
+  color: royalblue;
+  background-color: rgba(65, 105, 225, 0.137);
+  margin-left: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  height: fit-content;
+}
+.channel_header_bio {
+  font-size: 0.6rem;
+  font-weight: 400;
+  color: rgb(117, 117, 117);
+}
+.channel_body {
+  border: 1px solid red;
+  width: 100%;
+  height: 78vh;
+  overflow: scroll;
+}
+.channel_body::-webkit-scrollbar {
+  display: none;
+}
+/* Hide the scrollbar for Internet Explorer, Edge and Firefox */
+.channel_body {
+  -ms-overflow-style: none; /* Internet Explorer and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+.channel_footer {
+  border: 1px solid red;
+  width: 100%;
+  height: 7.5vh;
+  padding: 7px;
+  display: flex;
+  align-items: center;
+}
+.channel_join_btn {
+  background-color: transparent !important;
+  width: 80px !important;
+  height: 32px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border-radius: 25px !important;
+  border: 1.2px solid var(--secondary-color) !important;
+  color: var(--secondary-color) !important;
+  font-size: 0.8rem !important;
+  font-weight: 500 !important;
+}

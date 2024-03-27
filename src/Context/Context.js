@@ -11,6 +11,7 @@ function CreateContextProvider({ children }) {
   const [selectChatId, setSelectChatId] = useState("");
   const [selectChat, setSelectChat] = useState(null);
   const [selectReplyMessage, setSelectReplyMessage] = useState(null);
+  const [selectChannelId, setSelectChannelId] = useState("");
 
   return (
     <CreateContext.Provider
@@ -25,6 +26,8 @@ function CreateContextProvider({ children }) {
         setSelectChat,
         selectReplyMessage,
         setSelectReplyMessage,
+        selectChannelId,
+        setSelectChannelId,
       }}>
       {children}
     </CreateContext.Provider>

@@ -36,7 +36,7 @@ import { socket, useSocket } from "../../../../../../socket/socket";
 const ChatMessageHeader = ({ chat }) => {
   const toast = useToast();
   const id = useParams();
-  const { selectChatId, setSelectChatId } = GlobalContext();
+  const { setSelectChannelId, setSelectChatId } = GlobalContext();
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("user"));
   const [chatName, setChatName] = useState(chat.isGroup && chat.name);
@@ -99,8 +99,11 @@ const ChatMessageHeader = ({ chat }) => {
 
   const handleRedirectToChat = (id) => {
     setSelectChatId("");
+    setSelectChannelId("");
     if (window.innerWidth < 650) {
       navigate(-1);
+      setSelectChatId("");
+      setSelectChannelId("");
     }
   };
 

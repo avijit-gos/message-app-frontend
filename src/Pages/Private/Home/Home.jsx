@@ -1,7 +1,7 @@
 /** @format */
 
 import React, { useState, useEffect, useLayoutEffect } from "react";
-import { Box, Button, useToast } from "@chakra-ui/react";
+import { Box, Button, Img, useToast } from "@chakra-ui/react";
 import "./Home.css";
 import { GlobalContext } from "../../../Context/Context";
 import Layout from "../../../Layout/Layout";
@@ -12,11 +12,14 @@ import Interests from "../../../Config/interests.json";
 import AuthButton from "../../../Components/ButtonComp/AuthButton";
 import axios from "axios";
 import { socket, useSocket } from "../../../socket/socket";
+import Empty from "../../../Assets/empty.svg";
+import ChannelSection from "./Components/ChannelSection/ChannelSection";
 
 const Home = () => {
   useSocket();
   const toast = useToast();
-  const { setPageType, windowWidth, selectChatId } = GlobalContext();
+  const { setPageType, windowWidth, selectChatId, selectChannelId } =
+    GlobalContext();
   const user = JSON.parse(localStorage.getItem("user"));
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [hobbies, setHobbies] = useState([]);
@@ -142,7 +145,18 @@ const Home = () => {
         {selectChatId ? (
           <Message />
         ) : (
-          <Box className='unselected_chat_container'>No chat selected</Box>
+          <>
+            {selectChannelId ? (
+              <ChannelSection />
+            ) : (
+              <Box className='unselected_chat_container'>
+                <Box className='unselected_message_section'>
+                  {/* <Img src={Empty} className='empty_image' /> */}
+                  <Box className='empty_message'>No data found</Box>
+                </Box>
+              </Box>
+            )}
+          </>
         )}
       </Box>
     </Layout>

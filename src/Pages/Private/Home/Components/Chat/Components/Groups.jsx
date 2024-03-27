@@ -55,7 +55,7 @@ const Groups = () => {
           setLoading(false);
         });
     } else {
-      console.log("Caame with sort type");
+      console.log("Came with sort type");
       let config = {
         method: "get",
         maxBodyLength: Infinity,

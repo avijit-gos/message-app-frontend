@@ -1,0 +1,67 @@
+<Accordion defaultIndex={[0]} allowMultiple>
+                  <AccordionItem>
+                    <h2>
+                      <AccordionButton>
+                        <Box
+                          as='span'
+                          flex='1'
+                          textAlign='left'
+                          className='accordion_header'>
+                          Profile Settings
+                        </Box>
+                        <AccordionIcon />
+                      </AccordionButton>
+                    </h2>
+                    <AccordionPanel>
+                      {/* Name */}
+                      <Box className='update_section'>
+                        <Box
+                          className='accrodion_box'
+                          onClick={() => setOpenNameModal(true)}>
+                          <span className='user_name'>{name}</span>
+                        </Box>
+                      </Box>
+
+                      {/* Bio */}
+
+                      <Box className='update_section'>
+                        <Box
+                          className='accrodion_box'
+                          onClick={() => setOpenBioModal(true)}>
+                          <span className='user_bio'>
+                            {bio || "No profile bio has been set"}
+                          </span>
+                        </Box>
+                      </Box>
+
+                      {/* Interests */}
+                      <Box
+                        className='hobbies_update_section'
+                        onClick={() => setOpenHobbyModal(true)}>
+                        {(hobbies || []).map((data) => (
+                          <Box className='hobbies_box' key={data}>
+                            {data}
+                          </Box>
+                        ))}
+                      </Box>
+
+                      {/* Account created */}
+                    </AccordionPanel>
+                  </AccordionItem>
+
+                  <AccordionItem>
+                    <h2>
+                      <AccordionButton>
+                        <Box
+                          as='span'
+                          flex='1'
+                          textAlign='left'
+                          className='accordion_header'>
+                          Security Settings
+                        </Box>
+                        <AccordionIcon />
+                      </AccordionButton>
+                    </h2>
+                    <AccordionPanel>{/* Update password */}</AccordionPanel>
+                  </AccordionItem>
+                </Accordion>

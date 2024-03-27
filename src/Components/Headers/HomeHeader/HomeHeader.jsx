@@ -27,6 +27,10 @@ import ModalComp from "../../ModalComp/ModalComp";
 import axios from "axios";
 import TextareaComp from "../../InputComp/TextareaComp";
 import Interests from "../../../Config/interests.json";
+import { MdArrowForwardIos } from "react-icons/md";
+import { FiSettings } from "react-icons/fi";
+import { GoLock } from "react-icons/go";
+import { IoIosArrowDown } from "react-icons/io";
 
 const HomeHeader = () => {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -55,7 +59,7 @@ const HomeHeader = () => {
   const [loadingHobbyBtn, setLoadingHobbyBtn] = useState(false);
   const [disableHobbyBtn, setDisableHobbyBtn] = useState(true);
 
-  
+  const [openSettingsOne, setOpenSettingsOne] = useState(false);
 
   const handleUploadImage = (e) => {
     setLoading(true);
@@ -333,7 +337,7 @@ const HomeHeader = () => {
               {/* Profile image section */}
               <Box className='profile_image_section'>
                 <Box className='avatar_section'>
-                  <Img src={image} className='user_drawer_avatar' />
+                  <Avatar src={image} className='user_drawer_avatar' />
                   {loading ? (
                     <Box className='image_loading_section'>
                       <span className='image-loader'></span>
@@ -355,21 +359,22 @@ const HomeHeader = () => {
 
               {/* Drawer Accordion section */}
               <Box className='drawer_accordion_section'>
-                <Accordion defaultIndex={[0]} allowMultiple>
-                  <AccordionItem>
-                    <h2>
-                      <AccordionButton>
-                        <Box
-                          as='span'
-                          flex='1'
-                          textAlign='left'
-                          className='accordion_header'>
-                          Profile Settings
-                        </Box>
-                        <AccordionIcon />
-                      </AccordionButton>
-                    </h2>
-                    <AccordionPanel>
+                {/* Profile settings */}
+                <Box className='settings_box'>
+                  <Box
+                    className='settings_box_header'
+                    onClick={() => setOpenSettingsOne((prev) => !prev)}>
+                    <Box className='settings_box_name'>
+                      <FiSettings className='settings_box_icon' />
+                      Profile Settings
+                    </Box>
+                    <Box className='settings_icon'>
+                      <MdArrowForwardIos />
+                    </Box>
+                  </Box>
+
+                  {openSettingsOne && (
+                    <>
                       {/* Name */}
                       <Box className='update_section'>
                         <Box
@@ -401,27 +406,22 @@ const HomeHeader = () => {
                           </Box>
                         ))}
                       </Box>
+                    </>
+                  )}
+                </Box>
+              </Box>
 
-                      {/* Account created */}
-                    </AccordionPanel>
-                  </AccordionItem>
-
-                  <AccordionItem>
-                    <h2>
-                      <AccordionButton>
-                        <Box
-                          as='span'
-                          flex='1'
-                          textAlign='left'
-                          className='accordion_header'>
-                          Security Settings
-                        </Box>
-                        <AccordionIcon />
-                      </AccordionButton>
-                    </h2>
-                    <AccordionPanel>{/* Update password */}</AccordionPanel>
-                  </AccordionItem>
-                </Accordion>
+              {/* Privacy settings */}
+              <Box className='settings_box'>
+                <Box className='settings_box_header'>
+                  <Box className='settings_box_name'>
+                    <GoLock className='settings_box_icon' />
+                    Privacy Settings
+                  </Box>
+                  <Box className='settings_icon'>
+                    <MdArrowForwardIos />
+                  </Box>
+                </Box>
               </Box>
             </Box>
           }
